@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="create_table_courses" author="Jaroslaw_Skarzynski">
+        <createTable tableName="courses">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_courses"/>
+            </column>
+            <column name="name" type="VARCHAR(50)" />
+            <column name="place" type="VARCHAR(50)" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="populate_table_courses" author="Jaroslaw_Skarzynski">
+        <preConditions>
+            <tableExists tableName="courses" />
+        </preConditions>
+        <insert tableName="courses">
+            <column name="name">JavaGda5</column>
+            <column name="place">Gdansk</column>
+        </insert>
+        <insert tableName="courses">
+            <column name="name">JavaGda7</column>
+            <column name="place">Gdansk</column>
+        </insert>
+        <insert tableName="courses">
+            <column name="name">JavaGda11</column>
+            <column name="place">Sopot</column>
+        </insert>
+        <insert tableName="courses">
+            <column name="name">JavaGda15</column>
+            <column name="place">Gdynia</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="create_table_students" author="Jaroslaw_Skarzynski">
+        <createTable tableName="students">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_courses"/>
+            </column>
+            <column name="name" type="VARCHAR(50)" />
+            <column name="course_id" type="INT" />
+            <column name="description" type="VARCHAR(500)" />
+            <column name="seat" type="VARCHAR(100)" />
+        </createTable>
+        <addForeignKeyConstraint baseTableName="students" baseColumnNames="course_id" constraintName="fk_students_course_id"
+                                 referencedTableName="courses" referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="create_table_attendance_list" author="Jaroslaw_Skarzynski">
+        <createTable tableName="attendance_list">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_courses"/>
+            </column>
+            <column name="student_id" type="INT" />
+            <column name="course_id" type="INT" />
+            <column name="date" type="DATE" />
+        </createTable>
+        <addForeignKeyConstraint baseTableName="attendance_list" baseColumnNames="course_id" constraintName="fk_attendance_list_course_id"
+                                 referencedTableName="courses" referencedColumnNames="id" />
+        <addForeignKeyConstraint baseTableName="attendance_list" baseColumnNames="student_id" constraintName="fk_attendance_list_student_id"
+                                 referencedTableName="students" referencedColumnNames="id" />
+    </changeSet>
+
+</databaseChangeLog>
