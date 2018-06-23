@@ -16,26 +16,26 @@ public class ConnectionViaDriverManager {
 
     public static void main(String[] args) {
         try {
-            //STEP 1: Register JDBC driver - optional since JDBC 4.0
+            //Krok 1: Rejestrujemy sterownik JDBC - od wershu JDBC 4.0 krok opcjonalny
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             logger.error("Error during loading db driver", e);
         }
 
-        //STEP 2: Open a connection
+        //Krok 2: Otwieramy połączenie do bazy danych
         logger.info("Connecting to a selected database...");
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             logger.info("Connected database successfully...");
 
-            //STEP 3: Get db info
+            //Krok 3: Pobieramy informacje o bazie danych i połączeniu
             logger.info("connection = " + connection);
             logger.info("catalog = " + connection.getCatalog());
         } catch (SQLException e) {
             logger.error("Error during using connection", e);
         } finally {
-            //STEP 4: Close connection
+            //Krok 4: Zawsze zamykamy połączenie po skończonej pracy!
             try {
                 if (connection != null) {
                     connection.close();
