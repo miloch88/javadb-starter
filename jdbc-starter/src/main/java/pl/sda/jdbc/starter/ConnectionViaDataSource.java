@@ -26,6 +26,7 @@ public class ConnectionViaDataSource {
         dataSource.setPort(DB_PORT);
         dataSource.setServerTimezone("Europe/Warsaw");
         dataSource.setUseSSL(false);
+        dataSource.setCharacterEncoding("UTF-8");
 
         logger.info("Connecting to a selected database...");
 
