@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class ConnectionViaDriverManager {
     private static Logger logger = LoggerFactory.getLogger(ConnectionViaDriverManager.class);
 
-    private static final String DB_URL = "jdbc:mysql://{host:localhost}:{port:3306}/{dbname:sda_courses}?useSSL=false&serverTimezone=Europe/Warsaw";
+    private static final String DB_URL = "jdbc:mysql://{host:localhost}:{port:3306}/{dbname:jdbc_test}?useSSL=false&serverTimezone=Europe/Warsaw";
     private static final String DB_USER = "";
     private static final String DB_PASSWORD = "";
 

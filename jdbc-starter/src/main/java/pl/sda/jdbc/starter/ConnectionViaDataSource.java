@@ -14,27 +14,31 @@ public class ConnectionViaDataSource {
     private static final String DB_NAME = "";
     private static final String DB_USER = "";
     private static final String DB_PASSWORD = "";
+    private static final int DB_PORT = 3306;
 
-    public static void main(String[] args) {
-        //STEP 1: Create a data source
+    public static void main(String[] args) throws SQLException {
+        //Krok 1: Tworzymy obiekt klasy DataSource
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setServerName(DB_SERVER_NAME);
         dataSource.setDatabaseName(DB_NAME);
         dataSource.setUser(DB_USER);
         dataSource.setPassword(DB_PASSWORD);
-        dataSource.setPort(3306);
+        dataSource.setPort(DB_PORT);
+        dataSource.setServerTimezone("Europe/Warsaw");
+        dataSource.setUseSSL(false);
 
         logger.info("Connecting to a selected database...");
 
-        //STEP 2: Get a connection
+        //Krok 2: Otwieramy połączenie do bazy danych
         try (Connection connection = dataSource.getConnection()){
             logger.info("Connected database successfully...");
 
-            //STEP 3: Get db info
-            logger.info("connection = " + connection);
-            logger.info("catalog = " + connection.getCatalog());
+            //Krok 3: Pobieramy informacje o bazie danych i połączeniu
+            logger.info("Connection = " + connection);
+            logger.info("Database name = " + connection.getCatalog());
         } catch (SQLException e) {
             logger.error("Error during using connection", e);
         }
+        //Krok 4: Zawsze zamykamy połączenie po skończonej pracy! - tutaj w sposób niejawny przez mechanizm try-with-resource - dostępny od Java 7
     }
 }
