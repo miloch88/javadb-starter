@@ -1,11 +1,12 @@
 -- -----------------------------------------------------
--- Table library.readers
+-- Table library.users
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS library.readers (
+CREATE TABLE IF NOT EXISTS library.users (
   id INT NOT NULL AUTO_INCREMENT,
   login VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
-  haslo VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
+  password VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
   name VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
+  admin BOOLEAN NOT NULL,
 PRIMARY KEY (id))
   ENGINE = InnoDB;
 
@@ -38,13 +39,13 @@ ON UPDATE NO ACTION)
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS library.orders (
   id INT NOT NULL AUTO_INCREMENT,
-  reader_id INT NOT NULL,
+  user_id INT NOT NULL,
   book_id INT NOT NULL,
   order_date DATETIME NOT NULL,
   return_date DATETIME NULL,
 PRIMARY KEY (id),
-FOREIGN KEY (reader_id)
-REFERENCES library.readers(id)
+FOREIGN KEY (user_id)
+REFERENCES library.users(id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION,
 FOREIGN KEY (book_id)

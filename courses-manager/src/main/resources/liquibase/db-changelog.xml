@@ -12,6 +12,8 @@
             </column>
             <column name="name" type="VARCHAR(50)" />
             <column name="place" type="VARCHAR(50)" />
+            <column name="start_date" type="DATE" />
+            <column name="end_date" type="DATE" />
         </createTable>
     </changeSet>
 
@@ -22,14 +24,20 @@
         <insert tableName="courses">
             <column name="name">JavaGda5</column>
             <column name="place">Gdansk</column>
+            <column name="start_date">2017-10-01</column>
+            <column name="end_date">2018-06-01</column>
         </insert>
         <insert tableName="courses">
             <column name="name">JavaGda7</column>
             <column name="place">Gdansk</column>
+            <column name="start_date">2018-01-01</column>
+            <column name="end_date">2018-09-15</column>
         </insert>
         <insert tableName="courses">
             <column name="name">JavaGda11</column>
             <column name="place">Sopot</column>
+            <column name="start_date">2018-02-01</column>
+            <column name="end_date">2018-07-15</column>
         </insert>
         <insert tableName="courses">
             <column name="name">JavaGda15</column>

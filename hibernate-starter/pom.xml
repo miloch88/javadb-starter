@@ -9,19 +9,26 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>library-manager</artifactId>
+    <artifactId>hibernate-starter</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <dependencies>
+        <!-- główny moduł Hibernate -->
         <dependency>
-            <groupId>pl.sda.jdbc</groupId>
-            <artifactId>jdbc-starter</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+        <!-- sterownik JDBC do bazy MySql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.beryx</groupId>
-            <artifactId>text-io</artifactId>
-            <version>3.1.4</version>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>pl.sda.jdbc</groupId>
+            <artifactId>commons</artifactId>
         </dependency>
     </dependencies>
 </project>

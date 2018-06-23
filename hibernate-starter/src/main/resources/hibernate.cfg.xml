@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory>
+        <!-- ustawienia połączenie do bazy danych -->
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/hibernate_test?useSSL=false&amp;serverTimezone=Europe/Warsaw</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">root</property>
+
+        <!-- pula połączeń JDBC(dostarczana przez Hibernate - nie stosować w środowisku produkcyjnym!) -->
+        <property name="connection.pool_size">1</property>
+
+        <!-- wyświetlamy na konsolę wszystkie zapytania SQL, które wywołuje dla nas Hibernate -->
+        <property name="show_sql">true</property>
+
+        <!-- http://docs.jboss.org/hibernate/orm/5.0/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl -->
+        <!-- usuń i odwtórz strukturę bazy danych przy starcie aplikacji -->
+        <property name="hbm2ddl.auto">create</property>
+
+        <!-- SQL dialekt -->
+        <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
+
+        <!-- lista plików ze szczegółami mapowania klas do bazy danych -->
+        <!--<mapping resource="Course.hbm.xml"/>-->
+
+        <!-- lista klas do mapowania do bazy danych -->
+        <!--<mapping class="pl.sda.hibernate.starter.entities.CourseEntity"/>-->
+    </session-factory>
+</hibernate-configuration>
