@@ -38,6 +38,9 @@ public class ConnectionFactory {
         Properties properties = new Properties();
         try {
             InputStream propertiesStream = ConnectionFactory.class.getResourceAsStream(propertiesFilename);
+            if(propertiesStream == null) {
+                throw new IllegalArgumentException("Can't find file: " + propertiesFilename);
+            }
             properties.load(propertiesStream);
         } catch (IOException e) {
             logger.error("Error during fetching properties for database", e);
