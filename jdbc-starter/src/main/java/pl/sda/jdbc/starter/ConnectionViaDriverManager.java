@@ -10,13 +10,13 @@ import java.sql.SQLException;
 public class ConnectionViaDriverManager {
     private static Logger logger = LoggerFactory.getLogger(ConnectionViaDriverManager.class);
 
-    private static final String DB_URL = "jdbc:mysql://{host:localhost}:{port:3306}/{dbname:sda_courses}";
+    private static final String DB_URL = "jdbc:mysql://{host:localhost}:{port:3306}/{dbname:sda_courses}?useSSL=false&serverTimezone=Europe/Warsaw";
     private static final String DB_USER = "";
     private static final String DB_PASSWORD = "";
 
     public static void main(String[] args) {
         try {
-            //Krok 1: Rejestrujemy sterownik JDBC - od wershu JDBC 4.0 krok opcjonalny
+            //Krok 1: Rejestrujemy sterownik JDBC - od wersji JDBC 4.0 krok opcjonalny
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             logger.error("Error during loading db driver", e);
@@ -30,8 +30,8 @@ public class ConnectionViaDriverManager {
             logger.info("Connected database successfully...");
 
             //Krok 3: Pobieramy informacje o bazie danych i połączeniu
-            logger.info("connection = " + connection);
-            logger.info("catalog = " + connection.getCatalog());
+            logger.info("Connection = " + connection);
+            logger.info("Database name = " + connection.getCatalog());
         } catch (SQLException e) {
             logger.error("Error during using connection", e);
         } finally {
