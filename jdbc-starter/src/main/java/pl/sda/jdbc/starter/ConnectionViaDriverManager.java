@@ -10,14 +10,14 @@ import java.sql.SQLException;
 public class ConnectionViaDriverManager {
     private static Logger logger = LoggerFactory.getLogger(ConnectionViaDriverManager.class);
 
-    private static final String DB_URL = "";
+    private static final String DB_URL = "jdbc:mysql://{host:localhost}:{port:3306}/{dbname:sda_courses}";
     private static final String DB_USER = "";
     private static final String DB_PASSWORD = "";
 
     public static void main(String[] args) {
         try {
             //STEP 1: Register JDBC driver - optional since JDBC 4.0
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             logger.error("Error during loading db driver", e);
         }
