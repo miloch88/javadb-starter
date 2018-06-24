@@ -16,14 +16,14 @@ public class JdbcUsersDao implements IUsersDao {
     public User findUser(String login, String password) {
         try (Connection connection = DatabaseManager.CONNECTION_FACTORY.getConnection();
              Statement statement = connection.createStatement()) {
-            String format = String.format("SELECT id, login, password, name, admin FROM users WHERE login='%s' AND password='%s';", login, password);
+            String format = String.format("SELECT id, login, password, name, is_admin FROM users WHERE login='%s' AND password='%s';", login, password);
             ResultSet resultSet = statement.executeQuery(format);
             if (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 login = resultSet.getString("login");
                 password = resultSet.getString("password");
                 String name = resultSet.getString("name");
-                boolean isAdmin = resultSet.getBoolean("admin");
+                boolean isAdmin = resultSet.getBoolean("is_admin");
                 return new User(id, login, password, name, isAdmin);
             }
             return null;
