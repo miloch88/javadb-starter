@@ -20,11 +20,11 @@ public class DatabaseDiscovery {
             logger.info("Driver name: {}, version: {}", metaData.getDriverName(), metaData.getDriverVersion());
             logger.info("User name: {}\n", metaData.getUserName());
 
-            ResultSet rs = metaData.getColumns("m1017_sda", null, null, null);
-            while(rs.next()) {
-                String tableName = rs.getString("TABLE_NAME");
-                String columnName = rs.getString("COLUMN_NAME");
-                String type = rs.getString("TYPE_NAME");
+            ResultSet resultSet = metaData.getColumns("m1017_sda", null, null, null);
+            while(resultSet.next()) {
+                String tableName = resultSet.getString("TABLE_NAME");
+                String columnName = resultSet.getString("COLUMN_NAME");
+                String type = resultSet.getString("TYPE_NAME");
                 logger.info("table: {}, columnName: {}, type: {}", tableName, columnName, type);
             }
         }
