@@ -102,8 +102,8 @@ public class DatabaseManager {
     }
 
     public static void main(String[] args) throws SQLException {
-        //createDb();
-        //initializeDb();
+        createDb();
+        initializeDb();
         //dropDb();
     }
 }
