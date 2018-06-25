@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import pl.sda.jdbc.starter.ConnectionFactory;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -87,6 +88,56 @@ public class DatabaseManager {
         }
     }
 
+    public static void initializeDb2() throws SQLException {
+        try (Connection connection = CONNECTION_FACTORY.getConnection();
+             PreparedStatement categoriesInsert = connection.prepareStatement("INSERT INTO categories(name) VALUES(?)");
+             PreparedStatement booksInsert = connection.prepareStatement("INSERT INTO books(category_id, title, author) VALUES(?, ?, ?)");
+             PreparedStatement usersInsert = connection.prepareStatement("INSERT INTO users(login, password, name, is_admin) VALUES(?, ?, ?, ?)")
+        ) {
+            categoriesInsert.setString(1, "poezja");
+            categoriesInsert.executeUpdate();
+            categoriesInsert.setString(1, "proza");
+            categoriesInsert.executeUpdate();
+            categoriesInsert.setString(1, "kryminał");
+            categoriesInsert.executeUpdate();
+            logger.info("Table: library.categories initialized!");
+
+            booksInsert.setInt(1, 1);
+            booksInsert.setString(2, "Pan Tadeusz");
+            booksInsert.setString(3, "Adam Mickiewicz");
+            booksInsert.executeUpdate();
+
+            booksInsert.setInt(1, 1);
+            booksInsert.setString(2, "Balladyna");
+            booksInsert.setString(3, "Juliusz Słowacki");
+            booksInsert.executeUpdate();
+
+            booksInsert.setInt(1, 2);
+            booksInsert.setString(2, "Ogniem i mieczem");
+            booksInsert.setString(3, "Henryk Sienkiewicz");
+            booksInsert.executeUpdate();
+
+            booksInsert.setInt(1, 3);
+            booksInsert.setString(2, "Morderstwo w Orient Expressie");
+            booksInsert.setString(3, "Agatha Christie");
+            booksInsert.executeUpdate();
+            logger.info("Table: library.books initialized!");
+
+            usersInsert.setString(1, "root");
+            usersInsert.setString(2, "root");
+            usersInsert.setString(3, "Pan Administrator");
+            usersInsert.setBoolean(4, true);
+            usersInsert.executeUpdate();
+
+            usersInsert.setString(1, "jarek");
+            usersInsert.setString(2, "123");
+            usersInsert.setString(3, "Jarek");
+            usersInsert.setBoolean(4, false);
+            usersInsert.executeUpdate();
+            logger.info("Table: library.users initialized!");
+        }
+    }
+
     public static void dropDb() throws SQLException {
         try (Connection connection = CONNECTION_FACTORY.getConnection();
              Statement statement = connection.createStatement()) {
@@ -103,7 +154,7 @@ public class DatabaseManager {
 
     public static void main(String[] args) throws SQLException {
         createDb();
-        initializeDb();
+        initializeDb2();
 //        dropDb();
     }
 }

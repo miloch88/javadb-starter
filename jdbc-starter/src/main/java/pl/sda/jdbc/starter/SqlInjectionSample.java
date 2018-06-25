@@ -1,9 +1,6 @@
 package pl.sda.jdbc.starter;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class SqlInjectionSample {
 
@@ -35,6 +32,22 @@ public class SqlInjectionSample {
             return null;
         }
     }
+    public String findAdminPro(String login, String password) throws SQLException {
+        try (Connection connection = new ConnectionFactory().getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT id, login, password FROM admins WHERE login=? AND password=?;")) {
+
+            statement.setString(1, login);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                login = resultSet.getString("login");
+                password = resultSet.getString("password");
+                return id + ", " + login + ", " + password;
+            }
+            return null;
+        }
+    }
 
     public void addAdmin(String login, String password) throws SQLException {
         try (Connection connection = new ConnectionFactory().getConnection();
@@ -46,28 +59,39 @@ public class SqlInjectionSample {
         }
     }
 
+    public void addAdminPro(String login, String password) throws SQLException {
+        try (Connection connection = new ConnectionFactory().getConnection();
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO admins(login, password) VALUES(?, ?);")) {
+
+            statement.setString(1, login);
+            statement.setString(2, password);
+            statement.executeUpdate();
+        }
+    }
+
     public static void main (String[] args) throws SQLException {
         SqlInjectionSample sample = new SqlInjectionSample();
 
         //sample.createTable();
-        //sample.addAdmin("top", "secret");
-        //System.out.println("admin = " + sample.findAdmin("top", "secret"));
-        //System.out.println("not-admin = " + sample.findAdmin("top", "123"));
+
+        /*sample.addAdmin("top", "secret");
+        System.out.println("admin = " + sample.findAdmin("top", "secret"));
+        System.out.println("not-admin = " + sample.findAdmin("top", "123"));*/
 
         //dodanie OR'a
-        //String admin = sample.findAdmin("", "' OR 1='1");
-        //System.out.println("admin = " + admin);
+        /*String admin = sample.findAdminPro("", "' OR 1='1");
+        System.out.println("admin = " + admin);*/
 
         //dodanie znaku początku komentarza
-        //String admin = sample.findAdmin("top'#", "123");
-        //System.out.println("admin = " + admin);
+        /*String admin = sample.findAdminPro("top'#", "123");
+        System.out.println("admin = " + admin);*/
 
-        //możemy nawet się zalogować nie znając loginu i hasła
-        //String admin = sample.findAdmin("' OR 1=1;#", "123");
-        //System.out.println("admin = " + admin);
+        //połączenie OR'a i komentarzy
+        /*String admin = sample.findAdminPro("' OR 1=1;#", "123");
+        System.out.println("admin = " + admin);*/
 
         //MultiQueries
-        //sample.addAdmin("123", "');DROP TABLE admins;#");
+        /*sample.addAdminPro("123", "');DROP TABLE admins;#");*/
     }
 
 }
