@@ -50,24 +50,25 @@ public class SqlInjectionSample {
         SqlInjectionSample sample = new SqlInjectionSample();
 
         //sample.createTable();
-        //sample.addAdmin("top", "secret");
-        //System.out.println("admin = " + sample.findAdmin("top", "secret"));
-        //System.out.println("not-admin = " + sample.findAdmin("top", "123"));
+
+        /*sample.addAdmin("top", "secret");
+        System.out.println("admin = " + sample.findAdmin("top", "secret"));
+        System.out.println("not-admin = " + sample.findAdmin("top", "123"));*/
 
         //dodanie OR'a
-        //String admin = sample.findAdmin("", "' OR 1='1");
-        //System.out.println("admin = " + admin);
+        /*String admin = sample.findAdmin("", "' OR 1='1");
+        System.out.println("admin = " + admin);*/
 
         //dodanie znaku początku komentarza
-        //String admin = sample.findAdmin("top'#", "123");
-        //System.out.println("admin = " + admin);
+        /*String admin = sample.findAdmin("top'#", "123");
+        System.out.println("admin = " + admin);*/
 
-        //możemy nawet się zalogować nie znając loginu i hasła
-        //String admin = sample.findAdmin("' OR 1=1;#", "123");
-        //System.out.println("admin = " + admin);
+        //połączenie OR'a i komentarzy
+        /*String admin = sample.findAdmin("' OR 1=1;#", "123");
+        System.out.println("admin = " + admin);*/
 
         //MultiQueries
-        //sample.addAdmin("123", "');DROP TABLE admins;#");
+        /*sample.addAdmin("123", "');DROP TABLE admins;#");*/
     }
 
 }
