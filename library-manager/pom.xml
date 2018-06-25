@@ -23,5 +23,9 @@
             <artifactId>text-io</artifactId>
             <version>3.1.4</version>
         </dependency>
+        <dependency>
+            <groupId>pl.sda.jdbc</groupId>
+            <artifactId>commons</artifactId>
+        </dependency>
     </dependencies>
 </project>
