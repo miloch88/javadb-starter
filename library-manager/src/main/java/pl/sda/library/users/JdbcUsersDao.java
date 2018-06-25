@@ -37,7 +37,7 @@ public class JdbcUsersDao implements IUsersDao {
     @Override
     public List<User> list(UserParameters userParameters) {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT id, login, password, name, admin FROM users";
+        String sql = "SELECT id, login, password, name, is_admin FROM users";
         try (Connection connection = DatabaseManager.CONNECTION_FACTORY.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -79,7 +79,7 @@ public class JdbcUsersDao implements IUsersDao {
                 String login = resultSet.getString("login");
                 String password = resultSet.getString("password");
                 String name = resultSet.getString("name");
-                boolean isAdmin = resultSet.getBoolean("admin");
+                boolean isAdmin = resultSet.getBoolean("is_admin");
 
                 users.add(new User(bookId, login, password, name, isAdmin));
             }
@@ -92,7 +92,7 @@ public class JdbcUsersDao implements IUsersDao {
 
     @Override
     public void addUser(User user) {
-        String sql = "INSERT INTO users(login, password, name, admin) VALUES(?, ?, ?, ?);";
+        String sql = "INSERT INTO users(login, password, name, is_admin) VALUES(?, ?, ?, ?);";
         try (Connection connection = DatabaseManager.CONNECTION_FACTORY.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 

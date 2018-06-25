@@ -40,7 +40,8 @@ public class CoursesManager2 {
 
     private void listStudents(Connection connection) throws SQLException {
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT s.id, s.name, c.name AS course_name, s.description, s.seat" +
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT s.id, s.name, c.name AS course_name, s.description, s.seat" +
                     " FROM students AS s" +
                     " JOIN courses AS c ON s.course_id = c.id");
             while (resultSet.next()) {
@@ -55,7 +56,8 @@ public class CoursesManager2 {
     }
 
     private void insertAttendance(Connection connection, int studentId, int courseId, LocalDate date) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO attendance_list(student_id, course_id, date) VALUES(?, ?, ?)")) {
+        try (PreparedStatement statement = connection.prepareStatement(
+                "INSERT INTO attendance_list(student_id, course_id, date) VALUES(?, ?, ?)")) {
             statement.setInt(1, studentId);
             statement.setInt(2, courseId);
             statement.setDate(3, Date.valueOf(date));
@@ -65,7 +67,8 @@ public class CoursesManager2 {
 
     private void listAttendances(Connection connection) throws SQLException {
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT a.id, s.name AS student_name, c.name AS course_name, a.date" +
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT a.id, s.name AS student_name, c.name AS course_name, a.date" +
                     " FROM attendance_list AS a" +
                     " JOIN courses AS c ON a.course_id = c.id" +
                     " JOIN students AS s ON a.student_id = s.id");
@@ -84,7 +87,7 @@ public class CoursesManager2 {
         try (Connection connection = new ConnectionFactory().getConnection()) {
             manager.listCourses(connection);
 
-            //manager.insertStudent(connection, "Jarek", 3, "ĄŹŹźżćżźćęłóó");
+            //manager.insertStudent(connection, "Jarek", 3, "Lubię kodować!");
 
             //manager.updateStudent(connection, 1, "1.1.1");
 
