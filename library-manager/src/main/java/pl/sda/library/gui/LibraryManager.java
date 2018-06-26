@@ -4,11 +4,11 @@ import com.google.common.collect.Lists;
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
+import pl.sda.commons.Utils;
 import pl.sda.library.books.Book;
 import pl.sda.library.books.Category;
-import pl.sda.library.orders.Order;
 import pl.sda.library.core.LibraryService;
-import pl.sda.library.core.Utils;
+import pl.sda.library.orders.Order;
 import pl.sda.library.users.User;
 
 import java.time.LocalDateTime;
@@ -47,7 +47,7 @@ public class LibraryManager {
     }
 
     private void printHeader() {
-        textIO.getTextTerminal().printf("Witaj %s, data logowania: %s\n", currentUser.getName(), Utils.dateTimeFormat(LocalDateTime.now()));
+        textIO.getTextTerminal().printf("Witaj %s, data logowania: %s\n", currentUser.getName(), Utils.dateFormat(LocalDateTime.now()));
         textIO.getTextTerminal().setBookmark(NEW_MENU_BOOKMARK);
     }
 

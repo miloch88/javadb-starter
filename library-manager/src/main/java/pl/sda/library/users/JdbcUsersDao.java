@@ -1,16 +1,8 @@
 package pl.sda.library.users;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import pl.sda.library.core.DatabaseManager;
-
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class JdbcUsersDao implements IUsersDao {
-    private static Logger logger = LoggerFactory.getLogger(JdbcUsersDao.class);
 
     @Override
     public User findUser(String login, String password) {
@@ -111,17 +103,5 @@ public class JdbcUsersDao implements IUsersDao {
 
     @Override
     public void deleteUser(int userId) {
-        String sql = "DELETE FROM users WHERE id=?";
-        try (Connection connection = DatabaseManager.CONNECTION_FACTORY.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setInt(1, userId);
-
-            statement.executeUpdate();
-
-            logger.info("User deleted, id:{}", userId);
-        } catch (SQLException e) {
-            logger.error("", e);
-        }
     }
 }

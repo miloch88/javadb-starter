@@ -2,20 +2,27 @@ package pl.sda.commons;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Utils {
-    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public static Date parse(String date) {
         try {
-            return simpleDateFormat.parse(date);
+            return SIMPLE_DATE_FORMAT.parse(date);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static String format(Date date) {
-        return simpleDateFormat.format(date);
+    public static String dateFormat(Date date) {
+        return SIMPLE_DATE_FORMAT.format(date);
+    }
+
+    public static String dateFormat(LocalDateTime dateTime) {
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }

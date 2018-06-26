@@ -1,7 +1,7 @@
 package pl.sda.library.orders;
 
+import pl.sda.commons.Utils;
 import pl.sda.library.books.Book;
-import pl.sda.library.core.Utils;
 
 import java.time.LocalDateTime;
 
@@ -47,9 +47,9 @@ public class Order {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder(book.toString());
-        stringBuilder.append(", data wypożyczenia: ").append(Utils.dateTimeFormat(orderDate));
+        stringBuilder.append(", data wypożyczenia: ").append(Utils.dateFormat(orderDate));
         if(returnDate != null) {
-            stringBuilder.append(", data zwrotu: ").append(Utils.dateTimeFormat(returnDate));
+            stringBuilder.append(", data zwrotu: ").append(Utils.dateFormat(returnDate));
         }
 
         return stringBuilder.toString();

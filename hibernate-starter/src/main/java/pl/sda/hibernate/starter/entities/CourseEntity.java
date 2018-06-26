@@ -68,8 +68,8 @@ public class CourseEntity {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", place='" + place + '\'' +
-                ", startDate=" + Utils.format(startDate) +
-                ", endDate=" + Utils.format(endDate) +
+                ", startDate=" + Utils.dateFormat(startDate) +
+                ", endDate=" + Utils.dateFormat(endDate) +
                 '}';
     }
 }
