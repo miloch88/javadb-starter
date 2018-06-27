@@ -20,7 +20,8 @@ public class JdbcBooksDao implements IBooksDao {
         //zapytanie o wrzystkie książki + wyciągniecie kategorii w postaci słownej
         String sql = "SELECT b.id, title, author, c.id category_id, c.name category " +
                 "FROM books b " +
-                "JOIN categories c ON b.category_id=c.id";
+                "JOIN categories c ON b.category_id=c.id " +
+                "ORDER BY id";
         try (Connection connection = DatabaseManager.CONNECTION_FACTORY.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
