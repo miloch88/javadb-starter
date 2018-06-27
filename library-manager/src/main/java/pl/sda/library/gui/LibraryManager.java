@@ -206,7 +206,18 @@ public class LibraryManager {
 
     private void printOrders() {
         List<Order> orders = libraryService.findOrders(currentUser.getId());
-        printList(orders);
+        List<String> messages = new ArrayList<>();
+        messages.add("Historia wypożyczeń:");
+        orders.stream()
+                .filter(order -> order.getReturnDate() != null)
+                .forEach(order -> messages.add(order.toString()));
+
+        messages.add("");
+        messages.add("Aktualne wypożyczenia:");
+        orders.stream()
+                .filter(order -> order.getReturnDate() == null)
+                .forEach(order -> messages.add(order.toString()));
+        printList(messages);
     }
 
     private void printList(List<?> list) {
