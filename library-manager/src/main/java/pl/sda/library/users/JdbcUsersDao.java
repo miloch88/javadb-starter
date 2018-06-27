@@ -1,5 +1,6 @@
 package pl.sda.library.users;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcUsersDao implements IUsersDao {
@@ -11,7 +12,7 @@ public class JdbcUsersDao implements IUsersDao {
 
     @Override
     public List<User> list(UserParameters userParameters) {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

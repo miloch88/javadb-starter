@@ -1,6 +1,7 @@
 package pl.sda.library.orders;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcOrdersDao implements IOrdersDao {
@@ -10,7 +11,7 @@ public class JdbcOrdersDao implements IOrdersDao {
     }
 
     public List<Order> findOrders(OrderParameters orderParameters) {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
