@@ -39,8 +39,11 @@ public class Book {
         return author;
     }
 
+
     @Override
     public String toString() {
-        return String.format("%s, %s - %s [%s]", id, title, author, category);
+        String idString = id != null ? id + ", " : "";
+        String categoryString = category != null ? "[" + category + "]" : "";
+        return String.format("%s %s - %s %s", idString, title, author, categoryString);
     }
 }

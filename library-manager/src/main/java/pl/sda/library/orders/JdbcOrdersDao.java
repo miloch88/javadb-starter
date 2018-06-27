@@ -31,61 +31,7 @@ public class JdbcOrdersDao implements IOrdersDao {
     }
 
     public List<Order> findOrders(OrderParameters orderParameters) {
-        List<Order> orders = new ArrayList<>();
-        String sql = "SELECT o.id, user_id, book_id, title, author, c.id AS category_id, c.name AS category, order_date, return_date " +
-                "FROM orders o " +
-                "JOIN books b ON o.book_id=b.id " +
-                "JOIN categories c ON b.category_id=c.id";
-
-        //przygotowanie listy filtrów do dodania do klauzuli WHERE
-        List<String> filters = new ArrayList<>();
-        if (orderParameters.hasUserId()) {
-            filters.add("o.user_id = ?");
-        }
-
-        if (orderParameters.hasBookId()) {
-            filters.add("o.book_id = ?");
-        }
-
-        if (!filters.isEmpty()) {
-            sql += " WHERE " + filters.stream().collect(Collectors.joining(" AND "));
-        }
-
-        logger.info("SQL: " + sql);
-
-        try (Connection connection = DatabaseManager.CONNECTION_FACTORY.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            //zmienna i pozwala nam dodać parametry w odpowiedniej kolejności
-            int i = 1;
-            if (orderParameters.hasUserId()) {
-                statement.setInt(i++, orderParameters.getUserId());
-            }
-            if (orderParameters.hasBookId()) {
-                statement.setInt(i, orderParameters.getBookId());
-            }
-
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                int orderId = resultSet.getInt("id");
-                int userId = resultSet.getInt("user_id");
-                int bookId = resultSet.getInt("book_id");
-                String title = resultSet.getString("title");
-                String author = resultSet.getString("author");
-                int categoryId = resultSet.getInt("category_id");
-                String category = resultSet.getString("category");
-                Timestamp orderTimestamp = resultSet.getTimestamp("order_date");
-                Timestamp returnTimestamp = resultSet.getTimestamp("return_date");
-
-                LocalDateTime orderDate = orderTimestamp == null ? null : orderTimestamp.toLocalDateTime();
-                LocalDateTime returnDate = returnTimestamp == null ? null : returnTimestamp.toLocalDateTime();
-                orders.add(new Order(orderId, userId, new Book(bookId, title, author, categoryId, category), orderDate, returnDate));
-            }
-        } catch (SQLException e) {
-            logger.error("", e);
-        }
-
-        return orders;
+        return null;
     }
 
     @Override
