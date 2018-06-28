@@ -1,5 +1,7 @@
 package pl.sda.hibernate.starter.pojo_entities;
 
+import pl.sda.commons.Utils;
+
 import java.util.Date;
 
 /**
@@ -15,7 +17,7 @@ public class Course {
     /**
      * Jedyny wymóg Hibernate to istnienie bezargumentowego konstruktora (najlepiej z widocznością pakietową albo public!)
      */
-    Course() {}
+    protected Course() {}
 
     public Course(String name, String place, Date startDate, Date endDate) {
         this.name = name;
@@ -50,8 +52,8 @@ public class Course {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", place='" + place + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                ", startDate=" + Utils.dateFormat(startDate)+
+                ", endDate=" + Utils.dateFormat(endDate) +
                 '}';
     }
 }
