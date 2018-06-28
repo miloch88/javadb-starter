@@ -16,7 +16,10 @@ public class HibernateConfiguration {
          * Krok 1: Konfiguracja Hibernate - ustawiamy parametry Hibernate (dostęp do bazy danych, parametry, cache itp)
          */
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure("hibernate.cfg.xml") // pobiera parametry z pliku hibernate.cfg.xml
+                /**
+                 * Konfiguracja ma być pobrana z pliku hibernate.cfg.xml
+                 */
+                .configure("hibernate.cfg.xml")
                 /**
                  * Uwaga! ustawiając parametry przez applySetting dodajemy prefix hibernate.* do nazwy parametru !
                  * ustawiając w ten sposób parametry nadpisujemy parametry z pliku
