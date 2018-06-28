@@ -6,7 +6,7 @@ public class Student {
     private String description;
     private String seat;
 
-    protected Student(String name, String description, String seat) {
+    public Student(String name, String description, String seat) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -27,5 +27,15 @@ public class Student {
 
     public String getSeat() {
         return seat;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", seat='" + seat + '\'' +
+                '}';
     }
 }
