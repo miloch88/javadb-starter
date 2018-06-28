@@ -21,7 +21,7 @@ public class HibernateLifeCycle {
 
     public HibernateLifeCycle() {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure("hibernate.cfg.xml")
+                .configure("hibernate-2.cfg.xml")
                 .build();
 
         Metadata metadata = new MetadataSources(registry)
