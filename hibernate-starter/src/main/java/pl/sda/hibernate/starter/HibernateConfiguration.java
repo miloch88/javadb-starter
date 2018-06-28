@@ -36,10 +36,6 @@ public class HibernateConfiguration {
                  * Można dodać pojedynczą klasę-encję
                  */
                 //.addAnnotatedClass(CourseEntity.class)
-                /**
-                 * można dodać cały pakiet
-                 */
-                //.addPackage("pl.sda.hibernate.starter.entities")
                 .buildMetadata();
 
         try(SessionFactory sessionFactory = metadata.buildSessionFactory();
