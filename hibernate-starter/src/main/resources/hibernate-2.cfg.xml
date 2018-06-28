@@ -25,11 +25,5 @@
         <!-- SQL dialekt -->
         <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
 
-        <!-- lista plików ze szczegółami mapowania klas do bazy danych -->
-        <mapping resource="Course.hbm.xml"/>
-        <mapping resource="Student.hbm.xml"/>
-
-        <!-- lista klas do mapowania do bazy danych -->
-        <!--<mapping class="pl.sda.hibernate.starter.entities.CourseEntity"/>-->
     </session-factory>
 </hibernate-configuration>

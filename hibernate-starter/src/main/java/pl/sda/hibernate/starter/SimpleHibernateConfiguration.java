@@ -44,7 +44,7 @@ public class SimpleHibernateConfiguration {
             logger.info("Id: {}", id);
             logger.info("After: {}", course);
 
-            Student student = new Student("Jarek", "Lubię kodować!", "1.1.1");
+            Student student = new Student("Jarek", 3, "Lubię kodować!", "1.1.1");
             logger.info("Before: {}", student);
             id = (Integer) session.save(student);
             logger.info("Id: {}", id);

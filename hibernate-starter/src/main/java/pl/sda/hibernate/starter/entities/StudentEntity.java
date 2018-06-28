@@ -1,15 +1,21 @@
-package pl.sda.hibernate.starter.pojo_entities;
+package pl.sda.hibernate.starter.entities;
 
-public class Student {
+import javax.persistence.*;
+
+@Entity
+@Table(name = "students")
+public class StudentEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private Integer courseId;
     private String description;
     private String seat;
 
-    protected Student() {}
+    protected StudentEntity() {}
 
-    public Student(String name, Integer courseId, String description, String seat) {
+    public StudentEntity(String name, Integer courseId, String description, String seat) {
         this.name = name;
         this.courseId = courseId;
         this.description = description;
