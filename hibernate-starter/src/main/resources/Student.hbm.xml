@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="pl.sda.hibernate.starter.pojo_entities">
+    <class name="Student" table="students" >
+        <id name="id" column="course_id" access="field">
+            <generator class="identity"/>
+        </id>
+
+        <property name="name" type="string" access="field" column="course_name"/>
+        <property name="description" access="field" />
+        <property name="seat" access="field" />
+    </class>
+</hibernate-mapping>

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.sda.commons.Utils;
 import pl.sda.hibernate.starter.pojo_entities.Course;
+import pl.sda.hibernate.starter.pojo_entities.Student;
 
 public class SimpleHibernateConfiguration {
     private static Logger logger = LoggerFactory.getLogger(SimpleHibernateConfiguration.class);
@@ -42,6 +43,13 @@ public class SimpleHibernateConfiguration {
             id = (Integer) session.save(course);
             logger.info("Id: {}", id);
             logger.info("After: {}", course);
+
+            Student student = new Student("Jarek", "Lubię kodować!", "1.1.1");
+            logger.info("Before: {}", student);
+            id = (Integer) session.save(student);
+            logger.info("Id: {}", id);
+            logger.info("After: {}", student);
+
 
             /**
              * Krok 4: kończymy transakcję - wszystkie dane powinny być zapisane w bazie

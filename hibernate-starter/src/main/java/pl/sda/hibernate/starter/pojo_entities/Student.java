@@ -6,7 +6,9 @@ public class Student {
     private String description;
     private String seat;
 
-    protected Student(String name, String description, String seat) {
+    public Student() {}
+
+    public Student(String name, String description, String seat) {
         this.id = id;
         this.name = name;
         this.description = description;
