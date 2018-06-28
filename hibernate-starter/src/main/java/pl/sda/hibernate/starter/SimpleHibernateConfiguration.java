@@ -50,7 +50,6 @@ public class SimpleHibernateConfiguration {
             logger.info("Id: {}", id);
             logger.info("After: {}", student);
 
-
             /**
              * Krok 4: kończymy transakcję - wszystkie dane powinny być zapisane w bazie
              */

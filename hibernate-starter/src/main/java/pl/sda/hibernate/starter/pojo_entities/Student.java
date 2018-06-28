@@ -6,7 +6,7 @@ public class Student {
     private String description;
     private String seat;
 
-    public Student() {}
+    protected Student() {}
 
     public Student(String name, String description, String seat) {
         this.id = id;
