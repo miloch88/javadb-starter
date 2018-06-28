@@ -30,4 +30,14 @@ public class Student {
     public String getSeat() {
         return seat;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", seat='" + seat + '\'' +
+                '}';
+    }
 }
