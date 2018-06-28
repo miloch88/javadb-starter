@@ -19,10 +19,10 @@ public class HibernateConfiguration {
                 .configure("hibernate.cfg.xml") // pobiera parametry z pliku hibernate.cfg.xml
                 /**
                  * Uwaga! ustawiając parametry przez applySetting dodajemy prefix hibernate.* do nazwy parametru !
-                 * ustwiająć w ten sposób parametry nadpisujemy parametry z pliku
+                 * ustawiając w ten sposób parametry nadpisujemy parametry z pliku
                  */
                 //.applySetting("hibernate.show_sql", false)
-                //.applySetting("hibernate.connection.username", "jarek")
+                //.applySetting("hibernate.connection.username", "not-user")
                 .build();
 
         /**
@@ -35,16 +35,19 @@ public class HibernateConfiguration {
                 //.addAnnotatedClass(CourseEntity.class)
                 /**
                  * można dodać cały pakiet
-                 *///.addPackage("pl.sda.hibernate.starter.entities")
+                 */
+                //.addPackage("pl.sda.hibernate.starter.entities")
                 .buildMetadata();
 
         try(SessionFactory sessionFactory = metadata.buildSessionFactory();
             Session session = sessionFactory.openSession()) {
 
             Transaction transaction = session.beginTransaction();
-            session.save(new CourseEntity("JavaGda11", "Sopot", Utils.parse("2018-01-01"), Utils.parse("2018-09-01")));
-            transaction.commit();
 
+            CourseEntity courseEntity = new CourseEntity("JavaGda11", "Sopot", Utils.parse("2018-01-01"), Utils.parse("2018-09-01"));
+            session.save(courseEntity);
+
+            transaction.commit();
         }
     }
 }

@@ -5,15 +5,33 @@ import pl.sda.commons.Utils;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity //wskazuje, że klasa Course to encja, która ma być mapowana do bazy danych
-@Table(name = "courses") //adnotacja zawiera informacje na temat tabeli w której mają być zapisane dane z tej klasy
+/**
+ * Adnotacja @Entity wskazuje, że klasa Course to encja, która ma być mapowana do bazy danych
+ */
+@Entity
+/**
+ * Adnotacja @Table zawiera informacje na temat tabeli w której mają być zapisane dane z tej klasy
+ */
+@Table(name = "courses")
 public class CourseEntity {
-    @Id // wskazuje pole które ma być identyfikatorem (PK w bazie), odpowiednik elementu  <id> z pliku: Course.hbm.xml
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // określa strategię generowania id, patrz opis w: Course.hbm.xml
+    /**
+     * Adnotacja @Id wskazuje pole które ma być identyfikatorem (PK w bazie), odpowiednik elementu <id> z pliku: Course.hbm.xml
+     * To gdzie umieścimy tą adnotację (nad polem czy nad getterem) determinuje sposób dostępu (access type) do danych przez Hibernate,
+     * odpowiednik atrybutu access="field" z pliku: Course.hbm.xml
+     */
+    @Id
+    /**
+     * Adnotacja @GeneratedValue określa strategię generowania id, patrz opis w: Course.hbm.xml
+     */
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    /**
+     * Adnotacja @Column konfiguracja kolumny w tabeli gdzie ma być zapisane to pole
+     */
+    @Column(insertable = false)
     private String place;
-    @Column(name = "start_date", nullable = false) //konfiguracja kolumny w tabeli gdzie ma być zapisane to pole
+    @Column(name = "start_date", nullable = false)
     private Date startDate;
     private Date endDate;
 

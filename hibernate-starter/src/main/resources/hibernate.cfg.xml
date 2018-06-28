@@ -19,7 +19,7 @@
         <property name="show_sql">true</property>
 
         <!-- http://docs.jboss.org/hibernate/orm/5.0/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl -->
-        <!-- usuń i odwtórz strukturę bazy danych przy starcie aplikacji -->
+        <!-- opcja 'create' = usuń i odwtórz strukturę bazy danych przy starcie aplikacji, inne opcje: 'create-only', 'create-drop', 'drop' -->
         <property name="hbm2ddl.auto">create</property>
 
         <!-- SQL dialekt -->
