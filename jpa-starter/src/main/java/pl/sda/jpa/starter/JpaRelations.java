@@ -14,25 +14,24 @@ public class JpaRelations {
     private static Logger logger = LoggerFactory.getLogger(JpaRelations.class);
     private EntityManagerFactory entityManagerFactory;
 
-    public void createEntityManagerFactory() {
+    public JpaRelations() {
         entityManagerFactory = Persistence.createEntityManagerFactory("pl.sda.jpa.starter");
     }
 
-    public void closeEntityManagerFactory() {
+    public void close() {
         entityManagerFactory.close();
     }
 
     public static void main(String[] args) {
         JpaRelations jpaQueries = new JpaRelations();
         try {
-            jpaQueries.createEntityManagerFactory();
             jpaQueries.oneToOne();
             //jpaQueries.oneToMany();
             //jpaQueries.manyToMany();
         } catch (Exception e) {
             logger.error("", e);
         } finally {
-            jpaQueries.closeEntityManagerFactory();
+            jpaQueries.close();
         }
     }
 

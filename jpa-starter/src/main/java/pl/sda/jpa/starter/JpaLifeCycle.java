@@ -14,22 +14,20 @@ public class JpaLifeCycle {
     private static Logger logger = LoggerFactory.getLogger(JpaLifeCycle.class);
     private EntityManagerFactory entityManagerFactory;
 
-    public void createEntityManagerFactory() {
+    public JpaLifeCycle() {
         entityManagerFactory = Persistence.createEntityManagerFactory("pl.sda.jpa.starter");
     }
 
-    public void closeEntityManagerFactory() {
+    public void close() {
         entityManagerFactory.close();
     }
 
     public static void main(String[] args) {
+        /**
+         * inicjalizujemy EntityManagerFactory (w konstruktorze), a tym samym inicjalizujemy Persistence Unit o nazwie: "pl.sda.hibernate.starter"
+         */
         JpaLifeCycle jpaLifeCycle = new JpaLifeCycle();
         try {
-            /**
-             * inicjalizujemy EntityManagerFactory, a tym samym inicjalizujemy Persistence Unit o nazwie: "pl.sda.hibernate.starter"
-             */
-            jpaLifeCycle.createEntityManagerFactory();
-
             /**
              * wykonujemy logikę biznesową naszej aplikacji
              */
@@ -41,7 +39,7 @@ public class JpaLifeCycle {
         } catch (Exception e) {
             logger.error("", e);
         } finally {
-            jpaLifeCycle.closeEntityManagerFactory();
+            jpaLifeCycle.close();
         }
     }
 
