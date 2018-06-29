@@ -39,7 +39,9 @@ public class JpaQueries {
     private void simpleQuery() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-        //krótka forma: "FROM CourseEntity"
+        /**
+         *  krótka forma: "FROM CourseEntity"
+         */
         Query simpleQuery = entityManager.createQuery("SELECT c FROM CourseEntity c");
         List resultList = simpleQuery.getResultList();
         printList(resultList);

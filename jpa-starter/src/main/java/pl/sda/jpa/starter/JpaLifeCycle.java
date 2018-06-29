@@ -38,6 +38,8 @@ public class JpaLifeCycle {
             /**
              * zamykamy obiekt EntityManagerFactory, kończąc pracę z powiązanym Persistence Unit (o nazwie: "pl.sda.hibernate.starter")
              */
+        } catch (Exception e) {
+            logger.error("", e);
         } finally {
             jpaLifeCycle.closeEntityManagerFactory();
         }
