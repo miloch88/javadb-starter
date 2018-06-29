@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.sda.commons.Utils;
+import pl.sda.jpa.starter.basic_entities.CourseEntity;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
