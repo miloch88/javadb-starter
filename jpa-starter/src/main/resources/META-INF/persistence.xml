@@ -8,7 +8,7 @@
             Persistence unit for SDA jpa starter
         </description>
 
-        <class>pl.sda.jpa.starter.CourseEntity</class>
+        <class>pl.sda.jpa.starter.basic_entities.CourseEntity</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
