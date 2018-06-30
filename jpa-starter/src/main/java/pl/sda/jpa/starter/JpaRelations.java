@@ -25,11 +25,11 @@ public class JpaRelations {
         try {
             //jpaQueries.oneToOne();
             //jpaQueries.oneToMany();
-            jpaQueries.manyToMany();
+            //jpaQueries.manyToMany();
             //jpaQueries.addStudentsWithSeats();
             //jpaQueries.addStudentsToCourse();
             //jpaQueries.modifyStudentsListForCourse(1);
-            jpaQueries.removeStudent(1);
+            //jpaQueries.removeStudent(1);
         } catch (Exception e) {
             logger.error("", e);
         } finally {
