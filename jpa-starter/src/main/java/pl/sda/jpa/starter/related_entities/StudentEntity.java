@@ -1,6 +1,8 @@
 package pl.sda.jpa.starter.related_entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "students")
@@ -9,17 +11,19 @@ public class StudentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private String seat;
 
-    @OneToOne//(cascade = {CascadeType.ALL})
-    //@JoinColumn(name = "add_id")
+    @OneToOne(cascade = {CascadeType.ALL})
+    private SeatEntity seat;
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "add_id")
     private AddressEntity address;
 
-    /*@ManyToOne(cascade = {CascadeType.ALL})
-    private CourseEntity course;*/
+    @ManyToOne(cascade = {CascadeType.ALL})
+    private CourseEntity course;
 
-    /*@ManyToMany(cascade = {CascadeType.ALL})
-    private Set<SkillEntity> skills = new HashSet<>();*/
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    private Set<SkillEntity> skills = new HashSet<>();
 
     protected StudentEntity() {
     }
@@ -36,11 +40,15 @@ public class StudentEntity {
         return name;
     }
 
-    public String getSeat() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public SeatEntity getSeat() {
         return seat;
     }
 
-    public void setSeat(String seat) {
+    public void setSeat(SeatEntity seat) {
         this.seat = seat;
     }
 
@@ -50,38 +58,30 @@ public class StudentEntity {
 
     public void setAddress(AddressEntity address) {
         this.address = address;
-        /**
-         * Jeżeli mamy relację dwukierunkową - sami musimy zadbać żeby obie strony miały ustawione dane
-         */
-        //address.setStudent(this);
     }
 
-    /*public CourseEntity getCourse() {
+    public CourseEntity getCourse() {
         return course;
     }
 
     public void setCourse(CourseEntity course) {
         this.course = course;
-        */
+    }
 
-    /**
-     * Jeżeli mamy relację dwukierunkową - sami musimy zadbać żeby obie strony miały ustawione dane
-     *//*
-        //course.addStudent(student);
-    }*/
-
-    /*public Set<SkillEntity> getSkills() {
+    public Set<SkillEntity> getSkills() {
         return skills;
     }
 
     public void addSkill(SkillEntity skill) {
         skills.add(skill);
-    }*/
+    }
+
     @Override
     public String toString() {
         return "StudentEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", seat='" + seat + '\'' +
                 // ", skills='" + skills + '\'' +
                 ", address=" + address +
                 // ", course=" + course +

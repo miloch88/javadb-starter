@@ -70,7 +70,7 @@ public class CourseEntityDao {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            entityManager.merge(courseEntity);
+            courseEntity = entityManager.merge(courseEntity);
             logger.info("Course updated, courseEntity:{}", courseEntity);
 
             entityManager.getTransaction().commit();
