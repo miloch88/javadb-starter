@@ -19,6 +19,9 @@ public class StudentEntity {
     @JoinColumn(name = "add_id")
     private AddressEntity address;
 
+    /**
+     * Uwaga w adnotacji @ManyToOne brak atrybutu: mappedBy ! - w tej relacje zawsze strona to-many jest właścicielem!
+     */
     @ManyToOne(cascade = {CascadeType.ALL})
     private CourseEntity course;
 
