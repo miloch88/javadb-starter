@@ -15,6 +15,9 @@ public class StudentEntity {
     //@JoinColumn(name = "add_id")
     private AddressEntity address;
 
+    /**
+     * Uwaga w adnotacji @ManyToOne brak atrybutu: mappedBy ! - w tej relacje zawsze strona to-many jest właścicielem!
+     */
     /*@ManyToOne(cascade = {CascadeType.ALL})
     private CourseEntity course;*/
 
@@ -34,6 +37,10 @@ public class StudentEntity {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSeat() {
@@ -62,12 +69,6 @@ public class StudentEntity {
 
     public void setCourse(CourseEntity course) {
         this.course = course;
-        */
-
-    /**
-     * Jeżeli mamy relację dwukierunkową - sami musimy zadbać żeby obie strony miały ustawione dane
-     *//*
-        //course.addStudent(student);
     }*/
 
     /*public Set<SkillEntity> getSkills() {

@@ -12,7 +12,7 @@ public class CourseEntity {
     private String name;
     private String place;
 
-    /*@OneToMany(mappedBy = "course")
+    /*@OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
     private Set<StudentEntity> students = new HashSet<>();*/
 
     CourseEntity() {}
@@ -48,6 +48,19 @@ public class CourseEntity {
 
     public void addStudent(StudentEntity student) {
         students.add(student);
+        *//**
+         * Jeżeli mamy relację dwukierunkową - sami musimy zadbać żeby obie strony miały ustawione dane
+         *//*
+        student.setCourse(this);
+
+    }
+
+    public void removeStudent(StudentEntity student) {
+        students.remove(student);
+        *//**
+         * Jeżeli mamy relację dwukierunkową - sami musimy zadbać żeby obie strony miały ustawione dane
+         *//*
+        student.setCourse(null);
     }*/
 
     @Override
