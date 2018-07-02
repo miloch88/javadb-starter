@@ -15,7 +15,7 @@ public class JpaRelations {
     private EntityManagerFactory entityManagerFactory;
 
     public JpaRelations() {
-        entityManagerFactory = Persistence.createEntityManagerFactory("pl.sda.jpa.starter");
+        entityManagerFactory = Persistence.createEntityManagerFactory("pl.sda.jpa.starter.relations");
     }
 
     public void close() {
@@ -56,7 +56,9 @@ public class JpaRelations {
 
             entityManager.getTransaction().commit();
         } finally {
-            entityManager.close();
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
     }
 
@@ -81,7 +83,9 @@ public class JpaRelations {
 
             entityManager.getTransaction().commit();
         } finally {
-            entityManager.close();
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
     }
 
@@ -105,7 +109,9 @@ public class JpaRelations {
 
             entityManager.getTransaction().commit();
         } finally {
-            entityManager.close();
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
     }
 }

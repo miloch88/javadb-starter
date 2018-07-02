@@ -7,12 +7,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "courses")
-@NamedQueries({
-        @NamedQuery(name="CourseEntity.findByCity" ,
-                query="SELECT c.name, c.place FROM CourseEntity c WHERE c.place = :place"),
-        @NamedQuery(name="CourseEntity.selectNameAndPlace" ,
-                query="SELECT c.name, c.place FROM CourseEntity c")
-})
 public class CourseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,8 +2,9 @@ package pl.sda.jpa.starter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.sda.commons.Utils;
-import pl.sda.jpa.starter.basic_entities.CourseEntity;
+import pl.sda.jpa.starter.entities.CourseEntity;
+import pl.sda.jpa.starter.entities.EntitiesLoader;
+import pl.sda.jpa.starter.entities.StudentEntity;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -15,7 +16,11 @@ public class JpaQueries {
     private EntityManagerFactory entityManagerFactory;
 
     public JpaQueries() {
-        entityManagerFactory = Persistence.createEntityManagerFactory("pl.sda.jpa.starter");
+        entityManagerFactory = Persistence.createEntityManagerFactory("pl.sda.jpa.starter.queries");
+    }
+
+    public EntityManagerFactory getEntityManagerFactory() {
+        return entityManagerFactory;
     }
 
     public void close() {
@@ -25,8 +30,9 @@ public class JpaQueries {
     public static void main(String[] args) {
         JpaQueries jpaQueries = new JpaQueries();
         try {
-            jpaQueries.fillDataBase();
-            jpaQueries.simpleQuery();
+            EntitiesLoader.fillDataBase(jpaQueries.getEntityManagerFactory());
+            //jpaQueries.simpleQuery();
+            //jpaQueries.relationsQuery();
         } catch (Exception e) {
             logger.error("", e);
         } finally {
@@ -35,88 +41,133 @@ public class JpaQueries {
     }
 
     private void simpleQuery() {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
 
-        /**
-         *  krótka forma: "FROM CourseEntity"
-         */
-        Query simpleQuery = entityManager.createQuery("SELECT c FROM CourseEntity c");
-        List resultList = simpleQuery.getResultList();
-        printList(resultList);
+            /**
+             *  krótka forma: "FROM CourseEntity"
+             */
+            Query simpleQuery = entityManager.createQuery("SELECT c FROM CourseEntity c");
+            List resultList = simpleQuery.getResultList();
+            printList(resultList);
 
-        /**
-         *  to samo co wyżej ale używamy TypeQuery
-         */
-        TypedQuery<CourseEntity> typedQuery = entityManager.createQuery("SELECT c FROM CourseEntity c", CourseEntity.class);
-        /**
-         *  polecenie SELECT na bazie jest wykonywane dopiero przy wywołaniu metod pobierających wyniki, np.: getResultList(), getResultStream()
-         */
-        List<CourseEntity> courseEntities = typedQuery.getResultList();
-        printList(courseEntities);
+            /**
+             *  to samo co wyżej ale używamy TypeQuery
+             */
+            TypedQuery<CourseEntity> typedQuery = entityManager.createQuery("SELECT c FROM CourseEntity c", CourseEntity.class);
+            /**
+             *  polecenie SELECT na bazie jest wykonywane dopiero przy wywołaniu metod pobierających wyniki, np.: getResultList(), getResultStream()
+             */
+            List<CourseEntity> courseEntities = typedQuery.getResultList();
+            printList(courseEntities);
 
-        /**
-         *  możemy też pobrać wyniki jako Stream, zauważ że polecenie SELECT jest ponownie wykonywane
-         */
-        typedQuery.getResultStream().forEach(entity -> logger.info("{} : {}", entity.getName(), entity.getPlace()));
+            /**
+             *  możemy też pobrać wyniki jako Stream, zauważ że polecenie SELECT jest ponownie wykonywane
+             */
+            typedQuery.getResultStream().forEach(entity -> logger.info("{} : {}", entity.getName(), entity.getPlace()));
 
-        /**
-         *  pobieramy tylko nazwy i miasto za pomocą NamedQuery, zapytanie jest zapisane w CourseEntity, tutaj tylko wykonujemy je po nazwie
-         */
-        simpleQuery = entityManager.createNamedQuery("CourseEntity.selectNameAndPlace");
-        resultList = simpleQuery.getResultList();
-        printList(resultList);
+            /**
+             *  pobieramy tylko nazwy i miasto za pomocą NamedQuery, zapytanie jest zapisane w CourseEntity, tutaj tylko wykonujemy je po nazwie
+             */
+            simpleQuery = entityManager.createNamedQuery("CourseEntity.selectNameAndPlace");
+            resultList = simpleQuery.getResultList();
+            printList(resultList);
 
-        /**
-         *  sortujemy po nazwie
-         */
-        simpleQuery = entityManager.createQuery("SELECT c.name, c.place FROM CourseEntity c ORDER BY c.name ASC");
-        resultList = simpleQuery.getResultList();
-        printList(resultList);
+            /**
+             *  sortujemy po nazwie
+             */
+            TypedQuery<Object[]> scalarQuery = entityManager.createQuery("SELECT c.name, c.place FROM CourseEntity c ORDER BY c.name ASC", Object[].class);
+            List<Object[]> scalarResultList = scalarQuery.getResultList();
+            Object[] firstRow = scalarResultList.get(0);
+            logger.info("Row 1, column 1: " + firstRow[0]);
+            logger.info("Row 1, column 2: " + firstRow[1]);
+            printList(resultList);
 
-        /**
-         *  zawężamy tylko do kursów z Sopotu
-         */
-        simpleQuery = entityManager.createQuery("SELECT c.name, c.place FROM CourseEntity c WHERE c.place = :place");
-        simpleQuery.setParameter("place", "Sopot");
-        resultList = simpleQuery.getResultList();
-        printList(resultList);
+            /**
+             *  zawężamy tylko do kursów z Sopotu i wrzucamy dane do obiektu CourseInfo
+             */
+            List<CourseInfo> courseInfoList = entityManager.createQuery("SELECT new pl.sda.jpa.starter.CourseInfo(c.name, c.place) FROM CourseEntity c WHERE c.place = :place", CourseInfo.class)
+                    .setParameter("place", "Sopot")
+                    .getResultList();
+            printList(courseInfoList);
 
-        /**
-         *  zawężamy tylko do kursów z Gdynia i pobieramy tylko jeden
-         */
-        typedQuery = entityManager.createQuery("SELECT c FROM CourseEntity c WHERE c.place = :place", CourseEntity.class);
-        typedQuery.setParameter("place", "Gdynia");
-        typedQuery.setMaxResults(1);
-        CourseEntity courseInGdynia = typedQuery.getSingleResult();
-        logger.info("Single result: {}", courseInGdynia);
+            /**
+             *  zawężamy tylko do kursów z Gdynia i pobieramy tylko jeden
+             */
+            typedQuery = entityManager.createQuery("SELECT c FROM CourseEntity c WHERE c.place = :place", CourseEntity.class);
+            typedQuery.setParameter("place", "Gdynia");
+            typedQuery.setMaxResults(1);
+            CourseEntity courseInGdynia = typedQuery.getSingleResult();
+            logger.info("Single result: {}", courseInGdynia);
 
-        /**
-         *  dodajemy stronicowanie
-         */
-        simpleQuery = entityManager.createQuery("FROM CourseEntity");
-        simpleQuery.setFirstResult(1);
-        simpleQuery.setMaxResults(2);
-        resultList = simpleQuery.getResultList();
-        printList(resultList);
+            /**
+             *  dodajemy stronicowanie
+             */
+            simpleQuery = entityManager.createQuery("FROM CourseEntity");
+            simpleQuery.setFirstResult(1);
+            simpleQuery.setMaxResults(2);
+            resultList = simpleQuery.getResultList();
+            printList(resultList);
 
-        /**
-         *  czemu EntityManage nie implementuje AutoClosable? https://github.com/javaee/jpa-spec/issues/77
-         */
-        entityManager.close();
+            /**
+             *  grupowanie
+             */
+            simpleQuery = entityManager.createQuery("SELECT c.place, COUNT(c) FROM CourseEntity c GROUP BY c.place");
+            resultList = simpleQuery.getResultList();
+            printList(resultList);
+
+        } finally {
+            /**
+             *  czemu EntityManage nie implementuje AutoClosable? https://github.com/javaee/jpa-spec/issues/77
+             */
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
     }
 
-    private void fillDataBase() {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
+    private void relationsQuery() {
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
 
-        entityManager.persist(new CourseEntity("JavaGda1", "Sopot", Utils.parse("2018-01-01"), Utils.parse("2018-09-01")));
-        entityManager.persist(new CourseEntity("JavaGda5", "Gdansk", Utils.parse("2018-02-01"), Utils.parse("2018-10-01")));
-        entityManager.persist(new CourseEntity("JavaGda6", "Gdynia", Utils.parse("2018-02-15"), Utils.parse("2018-10-15")));
-        entityManager.persist(new CourseEntity("JavaGda11", "Sopot", Utils.parse("2018-03-01"), Utils.parse("2018-11-01")));
-        entityManager.persist(new CourseEntity("JavaGda15", "Gdynia", Utils.parse("2018-04-01"), Utils.parse("2018-12-01")));
+            /**
+             *  Inner Join bez wskazywania połączeń (przez wyrażenie ON)
+             */
+            List<Object[]> resultList = entityManager.createQuery("SELECT s, c FROM StudentEntity s JOIN s.course c", Object[].class)
+                                                     .getResultList();
+            Object[] firstRow = resultList.get(0);
+            StudentEntity studentEntity = (StudentEntity) firstRow[0];
+            CourseEntity courseEntity = (CourseEntity) firstRow[1];
+            logger.info("Row 1, column 1: " + studentEntity);
+            logger.info("Row 1, column 2: " + courseEntity);
 
-        entityManager.getTransaction().commit();
-        entityManager.close();
+            /**
+             *  Inner Join z dodatkowym zawężaniem
+             */
+            List<StudentEntity> students = entityManager.createQuery("SELECT s FROM StudentEntity s JOIN s.course c WHERE c.place = :place", StudentEntity.class)
+                                                        .setParameter("place", "Gdynia")
+                                                        .getResultList();
+            printList(students);
+
+            /**
+             *  Left Join z grupowaniem i sortowaniem
+             */
+            resultList = entityManager.createQuery("SELECT c, COUNT(s) AS students_count FROM CourseEntity c LEFT JOIN c.students s " +
+                                                   "GROUP BY c ORDER BY students_count ASC", Object[].class)
+                                      .getResultList();
+            firstRow = resultList.get(0);
+            courseEntity = (CourseEntity) firstRow[0];
+            long studentsCount = (long) firstRow[1];
+            logger.info("Row 1, column 1: " + courseEntity);
+            logger.info("Row 1, column 2: " + studentsCount);
+            printList(resultList);
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
