@@ -44,6 +44,7 @@ public class JpaQueries {
         EntityManager entityManager = null;
         try {
             entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
 
             /**
              *  krótka forma: "FROM CourseEntity"
@@ -117,6 +118,7 @@ public class JpaQueries {
             resultList = simpleQuery.getResultList();
             printList(resultList);
 
+            entityManager.getTransaction().commit();
         } finally {
             /**
              *  czemu EntityManage nie implementuje AutoClosable? https://github.com/javaee/jpa-spec/issues/77
@@ -131,6 +133,7 @@ public class JpaQueries {
         EntityManager entityManager = null;
         try {
             entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
 
             /**
              *  Inner Join bez wskazywania połączeń (przez wyrażenie ON)
@@ -163,6 +166,8 @@ public class JpaQueries {
             logger.info("Row 1, column 1: " + courseEntity);
             logger.info("Row 1, column 2: " + studentsCount);
             printList(resultList);
+
+            entityManager.getTransaction().commit();
         } finally {
             if (entityManager != null) {
                 entityManager.close();
