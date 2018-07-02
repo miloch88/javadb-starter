@@ -26,6 +26,9 @@ public class StudentEntity {
     private CourseEntity course;
 
     @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JoinTable(name = "students_skills",
+            joinColumns = {@JoinColumn(name ="student_id")},
+            inverseJoinColumns = {@JoinColumn(name ="skill_id")})
     private Set<SkillEntity> skills = new HashSet<>();
 
     protected StudentEntity() {

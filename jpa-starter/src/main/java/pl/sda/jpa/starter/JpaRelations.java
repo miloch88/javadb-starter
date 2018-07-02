@@ -58,7 +58,9 @@ public class JpaRelations {
 
             entityManager.getTransaction().commit();
         } finally {
-            entityManager.close();
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
     }
 
@@ -83,7 +85,9 @@ public class JpaRelations {
 
             entityManager.getTransaction().commit();
         } finally {
-            entityManager.close();
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
     }
 
@@ -150,7 +154,9 @@ public class JpaRelations {
 
             entityManager.getTransaction().commit();
         } finally {
-            entityManager.close();
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
     }
 
@@ -180,7 +186,9 @@ public class JpaRelations {
 
             entityManager.getTransaction().commit();
         } finally {
-            entityManager.close();
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
     }
 
@@ -200,7 +208,9 @@ public class JpaRelations {
 
             entityManager.getTransaction().commit();
         } finally {
-            entityManager.close();
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
     }
 }

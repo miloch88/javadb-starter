@@ -15,7 +15,7 @@ public class JpaQueries {
     private EntityManagerFactory entityManagerFactory;
 
     public JpaQueries() {
-        entityManagerFactory = Persistence.createEntityManagerFactory("pl.sda.jpa.starter");
+        entityManagerFactory = Persistence.createEntityManagerFactory("pl.sda.jpa.starter.relations");
     }
 
     public void close() {
