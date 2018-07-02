@@ -5,12 +5,11 @@ import org.slf4j.LoggerFactory;
 import pl.sda.jpa.starter.entities.CourseEntity;
 import pl.sda.jpa.starter.entities.EntitiesLoader;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CourseEntityDaoExt {
     private static Logger logger = LoggerFactory.getLogger(CourseEntityDaoExt.class);
@@ -32,18 +31,33 @@ public class CourseEntityDaoExt {
         CourseEntityDaoExt dao = new CourseEntityDaoExt();
         try {
             EntitiesLoader.fillDataBase(dao.getEntityManagerFactory());
-
+            List<CourseEntity> courseEntities = dao.findByCity("Sopot");
+            dao.printList(courseEntities);
         } catch (Exception e) {
             logger.error("", e);
         } finally {
             dao.close();
         }
     }
+
     /**
      * Metoda wyszukuje wszystkie kursy znajdujące się w mieście podanym w argumencie 'city', posortowane malejąco po dacie rozpoczęcia.
      */
     public List<CourseEntity> findByCity(String city) {
-        return new ArrayList<>();
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            List<CourseEntity> resultList = entityManager.createQuery("SELECT c FROM CourseEntity c WHERE c.place=:city_name", CourseEntity.class)
+                    .setParameter("city_name", city)
+                    .getResultList();
+
+
+            return resultList;
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
     }
 
     /**
@@ -66,5 +80,11 @@ public class CourseEntityDaoExt {
      */
     public List<CourseEntity> findByCities(Set<String> cities) {
         return new ArrayList<>();
+    }
+
+    private void printList(List<?> list) {
+        logger.info("\nList: \n{}", list.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining("\n")));
     }
 }

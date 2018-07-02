@@ -5,11 +5,13 @@ import org.slf4j.LoggerFactory;
 import pl.sda.jpa.starter.entities.EntitiesLoader;
 import pl.sda.jpa.starter.entities.StudentEntity;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class StudentEntityDaoExt {
     private static Logger logger = LoggerFactory.getLogger(CourseEntityDaoExt.class);
@@ -31,6 +33,8 @@ public class StudentEntityDaoExt {
         StudentEntityDaoExt dao = new StudentEntityDaoExt();
         try {
             EntitiesLoader.fillDataBase(dao.getEntityManagerFactory());
+            List<StudentEntity> theMostSkilled = dao.findTheMostSkilled(3, 3);
+            logger.info(theMostSkilled + "");
         } catch (Exception e) {
             logger.error("", e);
         } finally {
@@ -57,7 +61,20 @@ public class StudentEntityDaoExt {
      * Metoda wyszukuje wszystkich studentów posiadających co najmniej jedną umiejętności ze zbioru podanego w parametrze 'skillsNames'.
      */
     public List<StudentEntity> findBySkills(Set<String> skillsNames) {
-        return new ArrayList<>();
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            List<StudentEntity> resultList = entityManager.createQuery("SELECT s FROM StudentEntity s INNER JOIN s.skills sk WHERE sk.name IN (:skills_names)", StudentEntity.class)
+                    .setParameter("skills_names", skillsNames)
+                    .getResultList();
+
+            return resultList;
+
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
     }
 
     /**
@@ -65,6 +82,26 @@ public class StudentEntityDaoExt {
      * Metoda ma zwrócić maksymalnie tylu studentów ile wskazuje parametr 'studentsLimit', posortowanych od tych którzy mają najwięcej umięjętności.
      */
     public List<StudentEntity> findTheMostSkilled(int studentsLimit, long minSkillsCount) {
-        return new ArrayList<>();
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            List<Object[]> resultList = entityManager.createQuery("SELECT s, COUNT(sk) AS skills_count FROM StudentEntity s LEFT JOIN s.skills sk " +
+                    "GROUP BY s HAVING COUNT(sk) >= :min_skills_count " +
+                    "ORDER BY skills_count DESC", Object[].class)
+                    .setParameter("min_skills_count", minSkillsCount)
+                    .setMaxResults(studentsLimit)
+                    .getResultList();
+
+
+            return resultList.stream()
+                    .map(array -> (StudentEntity) array[0])
+                    .peek(StudentEntity::toString)
+                    .collect(Collectors.toList());
+
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
     }
 }
