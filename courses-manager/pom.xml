@@ -21,12 +21,13 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.11</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
+           <!-- <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>3.5.0</version>
@@ -43,7 +44,7 @@
                          </goals>
                      </execution>
                  </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 
