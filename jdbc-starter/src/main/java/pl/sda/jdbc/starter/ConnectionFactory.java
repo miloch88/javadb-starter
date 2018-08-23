@@ -1,6 +1,5 @@
 package pl.sda.jdbc.starter;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,7 +7,6 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionFactory {
@@ -22,16 +20,26 @@ public class ConnectionFactory {
             throw new RuntimeException(e);
         }
     }
-
-    public ConnectionFactory() {
-        this("/database.properties");
-    }
-
-    public Connection getConnection() throws SQLException {
-        if (dataSource == null) {
-            throw new IllegalStateException("DataSource is not created!");
+    private Properties getDataBaseProperties(String filename) {
+        Properties properties = new Properties();
+        try {
+            /**
+             * Pobieramy zawartość pliku za pomocą classloadera, plik musi znajdować się w katalogu ustawionym w CLASSPATH
+             */
+            InputStream propertiesStream = ConnectionFactory.class.getResourceAsStream(filename);
+            if(propertiesStream == null) {
+                throw new IllegalArgumentException("Can't find file: " + filename);
+            }
+            /**
+             * Pobieramy dane z pliku i umieszczamy w obiekcie klasy Properties
+             */
+            properties.load(propertiesStream);
+        } catch (IOException e) {
+            logger.error("Error during fetching properties for database", e);
+            return null;
         }
-        return dataSource.getConnection();
+
+        return properties;
     }
 
     private DataSource getDataSource(String propertiesFilename) throws SQLException {
@@ -61,5 +69,16 @@ public class ConnectionFactory {
         //dataSource.setAllowMultiQueries(true);
 
         return dataSource;
+    }
+
+    public Connection getConnection() throws SQLException {
+        if (dataSource == null) {
+            throw new IllegalStateException("DataSource is not created!");
+        }
+        return dataSource.getConnection();
+    }
+
+    public static void main(String[] args) {
+
     }
 }
