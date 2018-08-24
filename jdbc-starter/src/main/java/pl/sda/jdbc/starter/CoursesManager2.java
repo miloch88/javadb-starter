@@ -7,7 +7,7 @@ import java.sql.*;
 import java.time.LocalDate;
 
 public class CoursesManager2 {
-    private Logger logger = LoggerFactory.getLogger(CoursesManager.class);
+    private Logger logger = LoggerFactory.getLogger(CoursesManager2.class);
 
     private void listCourses(Connection connection) throws SQLException {
         try (Statement statement = connection.createStatement()) {
