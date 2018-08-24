@@ -7,7 +7,9 @@ import pl.sda.library.orders.JdbcOrdersDao;
 import pl.sda.library.users.IUsersDao;
 import pl.sda.library.users.JdbcUsersDao;
 
-//wykorzystanie wzorca Factory do umieszczenia kodu tworzącego obiekty DAO w jednym miejscu
+/**
+ * Wykorzystanie wzorca Factory do umieszczenia kodu tworzącego obiekty DAO w jednym miejscu
+ */
 public class DaoFactory {
     public static IUsersDao getUsersDao() {
         return new JdbcUsersDao();
