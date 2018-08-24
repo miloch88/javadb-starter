@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class CoursesManager {
     private static Logger logger = LoggerFactory.getLogger(CoursesManager.class);
@@ -23,10 +25,45 @@ public class CoursesManager {
                     "  ENGINE = InnoDB;");
             logger.info("Table: sda_courses.courses created!");
 
-            statement.executeUpdate("INSERT INTO courses(name, place, start_date, end_date) VALUES('JavaGda10', 'Sopot', '2018-06-01', '2018-12-12')");
-            statement.executeUpdate("INSERT INTO courses(name, place, start_date, end_date) VALUES('JavaGda17', 'Gdansk', '2018-03-01', '2018-10-18')");
+            //statement.executeUpdate("INSERT INTO courses(name, place, start_date, end_date) VALUES('JavaGda17', 'Sopot', '2018-06-01', '2018-12-12')");
+            //statement.executeUpdate("INSERT INTO courses(name, place, start_date, end_date) VALUES('JavaGda14', 'Gdansk', '2018-03-01', '2018-10-18')");
+
+            addCourse("JavaGda17", "Sopot", LocalDate.of(2018, 6, 1), LocalDate.of(2018, 12, 12));
+            addCourse("JavaGda14", "Gdansk", LocalDate.of(2018, 3, 1), LocalDate.of(2018, 10, 18));
 
             logger.info("Table: sda_courses.courses filled with data!");
+        }
+    }
+
+    public void addCourse(String name, String place, LocalDate startDate, LocalDate endDate) throws SQLException{
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO courses(name, place, start_date, end_date) VALUES(?, ?, ?, ?)")) {
+
+            statement.setString(1, name);
+            statement.setString(2, place);
+            statement.setDate(3, Date.valueOf(startDate));
+            statement.setDate(4, Date.valueOf(endDate));
+
+            statement.executeUpdate();
+        }
+    }
+
+    public void updateCourse(int id, String name) throws SQLException{
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement("UPDATE courses SET name=? WHERE id=?")) {
+
+            statement.setString(1, name);
+            statement.setInt(2, id);
+
+            statement.executeUpdate();
+        }
+    }
+
+    public void deleteCourse(int id) throws SQLException{
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM courses WHERE id=?")) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
         }
     }
 
@@ -45,10 +82,40 @@ public class CoursesManager {
                     " ENGINE = InnoDB;");
             logger.info("Table: sda_courses.students created!");
 
-            statement.executeUpdate("INSERT INTO students(name, course_id, description, seat) VALUES('Jarek', 1, 'Lubię kodować!', 'A.1.1')");
-            statement.executeUpdate("INSERT INTO students(name) VALUES('Patrycja')");
+            //statement.executeUpdate("INSERT INTO students(name, course_id, description, seat) VALUES('Jarek', 1, 'Lubię kodować!', 'A.1.1')");
+            //statement.executeUpdate("INSERT INTO students(name) VALUES('Patrycja')");
+
+            addStudent("Jarek", 1, "Lubię kodować!", "A.1.1");
+            addStudent("Patrycja", null, null, null);
+            addStudent("Ewa", 1, null, null);
+            addStudent("Marcin", 2, null, null);
 
             logger.info("Table: sda_courses.students filled with data!");
+        }
+    }
+
+    public void addStudent(String name, Integer courseId, String description, String seat) throws SQLException{
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO students(name, course_id, description, seat) VALUES(?, ?, ?, ?)")) {
+
+            statement.setString(1, name);
+            statement.setObject(2, courseId);
+            statement.setString(3, description);
+            statement.setString(4, seat);
+
+            statement.executeUpdate();
+        }
+    }
+
+    public void updateStudent(int id, String description, String seat) throws SQLException{
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement("UPDATE students SET description=? , seat=? WHERE id=?")) {
+
+            statement.setString(1, description);
+            statement.setObject(2, seat);
+            statement.setInt(3, id);
+
+            statement.executeUpdate();
         }
     }
 
@@ -67,9 +134,34 @@ public class CoursesManager {
                     "ENGINE = InnoDB;");
             logger.info("Table: sda_courses.attendance_list created!");
 
-            statement.executeUpdate("INSERT INTO attendance_list(student_id, course_id, date) VALUES(1, 1, '2018-06-01 10:00:15')");
+            //statement.executeUpdate("INSERT INTO attendance_list(student_id, course_id, date) VALUES(1, 1, '2018-06-01 10:00:15')");
+            addAttendance(1, 1, LocalDateTime.of(2018, 6, 1, 10, 0, 15));
+            addAttendance(1, 1, LocalDateTime.of(2010, 1, 1, 11, 12, 13));
 
             logger.info("Table: sda_courses.attendance_list filled with data!");
+        }
+    }
+
+    public void addAttendance(int studentId, int courseId, LocalDateTime dateTime) throws SQLException{
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO attendance_list(student_id, course_id, date) VALUES(?, ?, ?)")) {
+
+            statement.setInt(1, studentId);
+            statement.setInt(2, courseId);
+            statement.setTimestamp(3, Timestamp.valueOf(dateTime));
+
+            statement.executeUpdate();
+        }
+    }
+
+    public void deleteAttendance(int studentId, LocalDateTime dateTime) throws SQLException{
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM attendance_list WHERE student_id=? AND date=?")) {
+
+            statement.setInt(1, studentId);
+            statement.setTimestamp(2, Timestamp.valueOf(dateTime));
+
+            statement.executeUpdate();
         }
     }
 
@@ -83,7 +175,7 @@ public class CoursesManager {
         }
     }
 
-    private void printAllCourses() throws SQLException {
+    public void printAllCourses() throws SQLException {
         try (Connection connection = connectionFactory.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT id, name, place, start_date, end_date FROM courses");
@@ -98,13 +190,34 @@ public class CoursesManager {
         }
     }
 
-    public void printAllStudents() throws SQLException {
+    public void printCoursesInCity(String city) throws SQLException {
         try (Connection connection = connectionFactory.getConnection();
-             Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(
-                    "SELECT s.id, s.name, c.name AS course_name, s.description, s.seat" +
-                    " FROM students AS s" +
-                    " LEFT JOIN courses AS c ON s.course_id = c.id");
+             PreparedStatement statement = connection.prepareStatement("SELECT id, name, place, start_date, end_date FROM courses WHERE place=?")) {
+
+            statement.setString(1, city);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String place = resultSet.getString("place");
+                Date startDate = resultSet.getDate("start_date");
+                Date endDate = resultSet.getDate("end_date");
+                logger.info("{}, {}, {}, {} - {}", id, name, place, startDate, endDate);
+            }
+        }
+    }
+
+    public void printAllStudents(int courseId) throws SQLException {
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                         "SELECT s.id, s.name, c.name AS course_name, s.description, s.seat" +
+                         " FROM students AS s" +
+                         " LEFT JOIN courses AS c ON s.course_id = c.id" +
+                         " WHERE c.id=?")) {
+            statement.setInt(1,courseId );
+
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
@@ -117,14 +230,18 @@ public class CoursesManager {
         }
     }
 
-    public void printAttendanceList() throws SQLException {
+    public void printAttendanceList(int courseId, LocalDate localDate) throws SQLException {
         try (Connection connection = connectionFactory.getConnection();
-             Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(
-                    "SELECT a.id, s.name AS student_name, c.name AS course_name, a.date" +
-                    " FROM attendance_list AS a" +
-                    " JOIN courses AS c ON a.course_id = c.id" +
-                    " JOIN students AS s ON a.student_id = s.id");
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT a.id, s.name AS student_name, c.name AS course_name, a.date" +
+                     " FROM attendance_list AS a" +
+                     " JOIN courses AS c ON a.course_id = c.id" +
+                     " JOIN students AS s ON a.student_id = s.id" +
+                     " WHERE c.id=? AND DATE(a.date)=?")) {
+            statement.setInt(1, courseId);
+            statement.setDate(2, Date.valueOf(localDate));
+
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String studentName = resultSet.getString("student_name");
@@ -137,14 +254,23 @@ public class CoursesManager {
     public static void main(String[] args) throws SQLException {
         CoursesManager coursesManager = new CoursesManager();
 
-        //coursesManager.dropAllTables();
+        coursesManager.dropAllTables();
 
-        //coursesManager.createCoursesTable();
-        //coursesManager.createStudentsTable();
-        //coursesManager.createAttendanceListTable();
+        coursesManager.createCoursesTable();
+        coursesManager.createStudentsTable();
+        coursesManager.createAttendanceListTable();
 
-        coursesManager.printAllCourses();
-        coursesManager.printAllStudents();
-        coursesManager.printAttendanceList();
+        //coursesManager.updateStudent(1, "Test", "X.Y.Z");
+        //coursesManager.deleteCourse(2);
+        //coursesManager.updateCourse(1, "JavaPro14");
+        //coursesManager.deleteAttendance(1, LocalDateTime.of(2010, 1, 1, 11, 12, 13));
+
+        logger.info("Courses:");
+        //coursesManager.printAllCourses();
+        coursesManager.printCoursesInCity("Sopot");
+        logger.info("Students:");
+        coursesManager.printAllStudents(2);
+        logger.info("Attendance list:");
+        coursesManager.printAttendanceList(1, LocalDate.of(2018, 6, 1));
     }
 }
