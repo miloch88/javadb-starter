@@ -1,7 +1,8 @@
-package pl.sda.jdbc.starter;
+package pl.sda.jdbc.starter.extra;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.sda.jdbc.starter.ConnectionFactory;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

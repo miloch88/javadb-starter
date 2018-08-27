@@ -9,7 +9,11 @@ import java.time.LocalDateTime;
 
 public class CoursesManager {
     private static Logger logger = LoggerFactory.getLogger(CoursesManager.class);
-    private ConnectionFactory connectionFactory = new ConnectionFactory("/sda-courses-database.properties");
+    private ConnectionFactory connectionFactory;
+
+    public CoursesManager(String filename) {
+        this.connectionFactory = new ConnectionFactory(filename);
+    }
 
     public void createCoursesTable() throws SQLException {
         try (Connection connection = connectionFactory.getConnection();
@@ -251,14 +255,36 @@ public class CoursesManager {
             }
         }
     }
+
+    public void printAttendanceList(int courseId) throws SQLException {
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT a.id, s.name AS student_name, c.name AS course_name, a.date" +
+                     " FROM attendance_list AS a" +
+                     " JOIN courses AS c ON a.course_id = c.id" +
+                     " JOIN students AS s ON a.student_id = s.id" +
+                     " WHERE c.id=?")) {
+            statement.setInt(1, courseId);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String studentName = resultSet.getString("student_name");
+                String courseName = resultSet.getString("course_name");
+                Timestamp date = resultSet.getTimestamp("date");
+                logger.info("{}, {}, {}, {}", id, studentName, courseName, date);
+            }
+        }
+    }
+
     public static void main(String[] args) throws SQLException {
-        CoursesManager coursesManager = new CoursesManager();
+        CoursesManager coursesManager = new CoursesManager("/remote-database.properties");
 
-        coursesManager.dropAllTables();
+        //coursesManager.dropAllTables();
 
-        coursesManager.createCoursesTable();
+        /*coursesManager.createCoursesTable();
         coursesManager.createStudentsTable();
-        coursesManager.createAttendanceListTable();
+        coursesManager.createAttendanceListTable();*/
 
         //coursesManager.updateStudent(1, "Test", "X.Y.Z");
         //coursesManager.deleteCourse(2);
@@ -266,11 +292,14 @@ public class CoursesManager {
         //coursesManager.deleteAttendance(1, LocalDateTime.of(2010, 1, 1, 11, 12, 13));
 
         logger.info("Courses:");
-        //coursesManager.printAllCourses();
-        coursesManager.printCoursesInCity("Sopot");
+        coursesManager.printAllCourses();
+        //coursesManager.printCoursesInCity("Gdańsk");
+
+        int courseId = 3;
         logger.info("Students:");
-        coursesManager.printAllStudents(2);
+        coursesManager.printAllStudents(courseId);
+
         logger.info("Attendance list:");
-        coursesManager.printAttendanceList(1, LocalDate.of(2018, 6, 1));
+        coursesManager.printAttendanceList(courseId);
     }
 }
