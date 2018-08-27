@@ -70,5 +70,4 @@ public class SqlInjectionSample {
         //MultiQueries
         /*sample.addAdmin("123", "');DROP TABLE admins;#");*/
     }
-
 }
