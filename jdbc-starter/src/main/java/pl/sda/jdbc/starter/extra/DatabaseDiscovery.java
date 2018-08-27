@@ -13,7 +13,7 @@ public class DatabaseDiscovery {
     private static Logger logger = LoggerFactory.getLogger(DatabaseDiscovery.class);
 
     public static void main(String[] args) throws SQLException {
-        try(Connection connection = new ConnectionFactory("/remote-database.properties").getConnection()) {
+        try(Connection connection = new ConnectionFactory().getConnection()) {
             DatabaseMetaData metaData = connection.getMetaData();
 
             logger.info("Database name: {}", connection.getCatalog());

@@ -39,7 +39,7 @@ public class CoursesManager {
         }
     }
 
-    public void addCourse(String name, String place, LocalDate startDate, LocalDate endDate) throws SQLException{
+    public void addCourse(String name, String place, LocalDate startDate, LocalDate endDate) throws SQLException {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement("INSERT INTO courses(name, place, start_date, end_date) VALUES(?, ?, ?, ?)")) {
 
@@ -52,7 +52,7 @@ public class CoursesManager {
         }
     }
 
-    public void updateCourse(int id, String name) throws SQLException{
+    public void updateCourse(int id, String name) throws SQLException {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement("UPDATE courses SET name=? WHERE id=?")) {
 
@@ -63,7 +63,7 @@ public class CoursesManager {
         }
     }
 
-    public void deleteCourse(int id) throws SQLException{
+    public void deleteCourse(int id) throws SQLException {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement("DELETE FROM courses WHERE id=?")) {
             statement.setInt(1, id);
@@ -98,7 +98,7 @@ public class CoursesManager {
         }
     }
 
-    public void addStudent(String name, Integer courseId, String description, String seat) throws SQLException{
+    public void addStudent(String name, Integer courseId, String description, String seat) throws SQLException {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement("INSERT INTO students(name, course_id, description, seat) VALUES(?, ?, ?, ?)")) {
 
@@ -111,7 +111,7 @@ public class CoursesManager {
         }
     }
 
-    public void updateStudent(int id, String description, String seat) throws SQLException{
+    public void updateStudent(int id, String description, String seat) throws SQLException {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement("UPDATE students SET description=? , seat=? WHERE id=?")) {
 
@@ -146,7 +146,7 @@ public class CoursesManager {
         }
     }
 
-    public void addAttendance(int studentId, int courseId, LocalDateTime dateTime) throws SQLException{
+    public void addAttendance(int studentId, int courseId, LocalDateTime dateTime) throws SQLException {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement("INSERT INTO attendance_list(student_id, course_id, date) VALUES(?, ?, ?)")) {
 
@@ -158,7 +158,7 @@ public class CoursesManager {
         }
     }
 
-    public void deleteAttendance(int studentId, LocalDateTime dateTime) throws SQLException{
+    public void deleteAttendance(int studentId, LocalDateTime dateTime) throws SQLException {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement("DELETE FROM attendance_list WHERE student_id=? AND date=?")) {
 
@@ -215,11 +215,11 @@ public class CoursesManager {
     public void printAllStudents(int courseId) throws SQLException {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                         "SELECT s.id, s.name, c.name AS course_name, s.description, s.seat" +
-                         " FROM students AS s" +
-                         " LEFT JOIN courses AS c ON s.course_id = c.id" +
-                         " WHERE c.id=?")) {
-            statement.setInt(1,courseId );
+                     "SELECT s.id, s.name, c.name AS course_name, s.description, s.seat" +
+                             " FROM students AS s" +
+                             " LEFT JOIN courses AS c ON s.course_id = c.id" +
+                             " WHERE c.id=?")) {
+            statement.setInt(1, courseId);
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -234,14 +234,35 @@ public class CoursesManager {
         }
     }
 
+    public void listStudentsBySeat(String column, String row, String seatNumber) throws SQLException {
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT * FROM students WHERE seat LIKE ?")) {
+
+            column = (column == null)? "_" : column;
+            row = (row == null)? "_" : row;
+            seatNumber = (seatNumber == null)? "_" : seatNumber;
+            statement.setString(1, column + "." + row + "." + seatNumber);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String description = resultSet.getString("description");
+                String seat = resultSet.getString("seat");
+                logger.info("{}, {}, {}, {}", id, name, description, seat);
+            }
+        }
+    }
+
     public void printAttendanceList(int courseId, LocalDate localDate) throws SQLException {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT a.id, s.name AS student_name, c.name AS course_name, a.date" +
-                     " FROM attendance_list AS a" +
-                     " JOIN courses AS c ON a.course_id = c.id" +
-                     " JOIN students AS s ON a.student_id = s.id" +
-                     " WHERE c.id=? AND DATE(a.date)=?")) {
+                             " FROM attendance_list AS a" +
+                             " JOIN courses AS c ON a.course_id = c.id" +
+                             " JOIN students AS s ON a.student_id = s.id" +
+                             " WHERE c.id=? AND DATE(a.date)=?")) {
             statement.setInt(1, courseId);
             statement.setDate(2, Date.valueOf(localDate));
 
@@ -260,10 +281,10 @@ public class CoursesManager {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "SELECT a.id, s.name AS student_name, c.name AS course_name, a.date" +
-                     " FROM attendance_list AS a" +
-                     " JOIN courses AS c ON a.course_id = c.id" +
-                     " JOIN students AS s ON a.student_id = s.id" +
-                     " WHERE c.id=?")) {
+                             " FROM attendance_list AS a" +
+                             " JOIN courses AS c ON a.course_id = c.id" +
+                             " JOIN students AS s ON a.student_id = s.id" +
+                             " WHERE c.id=?")) {
             statement.setInt(1, courseId);
 
             ResultSet resultSet = statement.executeQuery();
@@ -278,7 +299,7 @@ public class CoursesManager {
     }
 
     public static void main(String[] args) throws SQLException {
-        CoursesManager coursesManager = new CoursesManager("/remote-database.properties");
+        CoursesManager coursesManager = new CoursesManager("/sda-courses-database.properties");
 
         //coursesManager.dropAllTables();
 
@@ -297,7 +318,8 @@ public class CoursesManager {
 
         int courseId = 3;
         logger.info("Students:");
-        coursesManager.printAllStudents(courseId);
+        //coursesManager.printAllStudents(courseId);
+        coursesManager.listStudentsBySeat(null, null, "1");
 
         logger.info("Attendance list:");
         coursesManager.printAttendanceList(courseId);
