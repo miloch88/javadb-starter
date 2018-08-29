@@ -23,11 +23,6 @@
                 <artifactId>hibernate-core</artifactId>
                 <version>5.3.1.Final</version>
             </dependency>
-            <dependency>
-                <groupId>pl.sda.jdbc</groupId>
-                <artifactId>commons</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
