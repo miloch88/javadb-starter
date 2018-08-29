@@ -5,19 +5,26 @@
 
     <!-- Początek konfiguracji dla PersistenceUnit o nazwie: 'pl.sda.jpa.starter' -->
     <persistence-unit name="pl.sda.jpa.starter">
-        <class>pl.sda.jpa.starter.basic_entities.CourseEntity</class>
+        <!-- lista klas do mapowania do bazy danych -->
+        <class>pl.sda.jpa.starter.basic.CoachEntity</class>
 
+        <!-- domyślnie mechanizmy JPA skanują wszystkie klasy i dołanczają encje które znajdą - ta opcja wyłącza tą funkcjonalność -->
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>
+            <!-- ustawienia połączenie do bazy danych -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/hibernate_test?useSSL=false&amp;serverTimezone=Europe/Warsaw" />
             <property name="javax.persistence.jdbc.user" value="root" />
             <property name="javax.persistence.jdbc.password" value="root" />
 
-            <!-- Uwaga - dodajemy prefix hibernate. !-->
+            <!-- Uwaga - przy nazwach parametrów specyficznych dla Hibernate dodajemy prefix hibernate. !-->
+            <!-- wyświetlamy na konsolę wszystkie zapytania SQL, które wywołuje dla nas Hibernate -->
             <property name="hibernate.show_sql" value="true" />
+            <!-- http://docs.jboss.org/hibernate/orm/5.0/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl -->
+            <!-- opcja 'create' = usuń i odwtórz strukturę bazy danych przy starcie aplikacji, inne opcje: 'create-only', 'create-drop', 'drop' -->
             <property name="hibernate.hbm2ddl.auto" value="none" />
+            <!-- SQL dialekt -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect" />
         </properties>
     </persistence-unit>
