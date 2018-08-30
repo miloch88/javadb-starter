@@ -3,7 +3,7 @@ package pl.sda.jpa.starter.basic;
 import javax.persistence.*;
 import java.util.List;
 
-public class JpaStarter {
+public class JpaBasic {
     public static void main(String[] args) {
 
         EntityManagerFactory entityManagerFactory = null;
