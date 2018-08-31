@@ -18,7 +18,7 @@ public class CoachEntity {
     /**
      * Adnotacja @GeneratedValue określa strategię generowania id czyli klucza głównego (PK)
      * W naszym przypadku korzystamy z funkcjonalności AUTO-INCREMENT bazy MySQL.
-     * Więcej: http://www.onlinetutorialspoint.com/hibernate/generator-classes-in-hibernate.html
+     * Więcej: https://www.thoughts-on-java.org/jpa-generate-primary-keys/
      */
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

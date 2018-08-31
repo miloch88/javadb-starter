@@ -1,16 +1,12 @@
-package pl.sda.jpa.starter;
+package pl.sda.jpa.starter.lifecycle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.sda.jpa.starter.basic_entities.CourseEntity;
 
 import java.util.List;
 
 public class CourseEntityDao {
     private static Logger logger = LoggerFactory.getLogger(CourseEntityDao.class);
-
-    public static void main(String[] args) {
-    }
 
     public CourseEntity save(CourseEntity courseEntity) {
         return null;
@@ -29,4 +25,5 @@ public class CourseEntityDao {
     public List<CourseEntity> list() {
         return null;
     }
+
 }

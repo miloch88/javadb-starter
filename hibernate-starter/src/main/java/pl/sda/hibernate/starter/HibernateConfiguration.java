@@ -3,50 +3,53 @@ package pl.sda.hibernate.starter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.sda.commons.Utils;
-import pl.sda.hibernate.starter.entities.CourseEntity;
 
 public class HibernateConfiguration {
+    private static Logger logger = LoggerFactory.getLogger(HibernateConfiguration.class);
+
     public static void main(String[] args) {
         /**
-         * Krok 1: Konfiguracja Hibernate - ustawiamy parametry Hibernate (dostęp do bazy danych, parametry, cache itp)
-         */
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                /**
-                 * Konfiguracja ma być pobrana z pliku hibernate.cfg.xml
-                 */
-                .configure("hibernate.cfg.xml")
-                /**
-                 * Uwaga! ustawiając parametry przez applySetting dodajemy prefix hibernate.* do nazwy parametru !
-                 * ustawiając w ten sposób parametry nadpisujemy parametry z pliku
-                 */
-                //.applySetting("hibernate.show_sql", false)
-                //.applySetting("hibernate.connection.username", "not-user")
-                .build();
+         * Krok 1: prosta konfiguracja Hibernate: tworzymy obiekt klasy Configuration i
+         * podajemy mu plik z konfiguracją: "hibernate.cfg.xml" - plik znajduje się w katalogu resources
+        */
+        Configuration configuration = new Configuration();
+        configuration.configure("hibernate.cfg.xml");
 
         /**
-         * Krok 2: Konfiguracja Hibernate - ustawiamy mapowania klas-encji
+         * Krok 2: tworzymy dwa obiekty: SessionFactory i Session z konfiguracji, którą wcześniej przygotowaliśmy
          */
-        Metadata metadata = new MetadataSources(registry)
-                /**
-                 * Można dodać pojedynczą klasę-encję
-                 */
-                //.addAnnotatedClass(CourseEntity.class)
-                .buildMetadata();
-
-        try(SessionFactory sessionFactory = metadata.buildSessionFactory();
+        try(SessionFactory sessionFactory = configuration.buildSessionFactory();
             Session session = sessionFactory.openSession()) {
 
+            /**
+             * Krok 3: zaczynamy nową transakcję, każda operacja na bazie danych musi być "otoczona" transakcją
+             */
             Transaction transaction = session.beginTransaction();
 
-            CourseEntity courseEntity = new CourseEntity("JavaGda11", "Sopot", Utils.parse("2018-01-01"), Utils.parse("2018-09-01"));
-            session.save(courseEntity);
+            Course course = new Course("JavaGda11", "Sopot", Utils.parse("2018-01-01"), Utils.parse("2018-09-01"));
+            logger.info("Before: {}", course);
+            Integer id = (Integer) session.save(course);
+            logger.info("Id: {}", id);
+            logger.info("After: {}", course);
 
+            course = new Course("JavaGda15", "Gdansk", Utils.parse("2018-05-11"), Utils.parse("2018-12-11"));
+            logger.info("Before: {}", course);
+            id = (Integer) session.save(course);
+            logger.info("Id: {}", id);
+            logger.info("After: {}", course);
+
+            /**
+             * Krok 4: kończymy transakcję - wszystkie dane powinny być zapisane w bazie
+             */
             transaction.commit();
+
+            /**
+             * Krok 5: niejawnie zamykamy: sessionFactory i session
+             */
         }
     }
 }

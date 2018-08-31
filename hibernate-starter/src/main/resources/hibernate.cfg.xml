@@ -19,7 +19,7 @@
         <property name="show_sql">true</property>
 
         <!-- http://docs.jboss.org/hibernate/orm/5.0/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl -->
-        <!-- opcja 'create' = usuń i odwtórz strukturę bazy danych przy starcie aplikacji, inne opcje: 'create-only', 'create-drop', 'drop' -->
+        <!-- opcja 'create' = usuń i odwtórz strukturę bazy danych przy starcie aplikacji, inne opcje: 'create-only', 'create-drop', 'drop', 'none' -->
         <property name="hbm2ddl.auto">create</property>
 
         <!-- SQL dialekt -->
@@ -27,8 +27,5 @@
 
         <!-- lista plików ze szczegółami mapowania klas do bazy danych -->
         <mapping resource="Course.hbm.xml"/>
-
-        <!-- lista klas do mapowania do bazy danych -->
-        <!--<mapping class="pl.sda.hibernate.starter.entities.CourseEntity"/>-->
     </session-factory>
 </hibernate-configuration>
