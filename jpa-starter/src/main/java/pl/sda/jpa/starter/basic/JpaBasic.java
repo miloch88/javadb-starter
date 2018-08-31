@@ -28,7 +28,10 @@ public class JpaBasic {
              * Zapisujemy encję w bazie danych
              */
             CoachEntity coachEntity = new CoachEntity("Vlad Mihalcea");
-            entityManager.remove(coachEntity);
+            entityManager.persist(coachEntity);
+            entityManager.persist(new CoachEntity("Jan Borówka"));
+            entityManager.persist(new CoachEntity("Mietek Kmita"));
+            entityManager.persist(new CoachEntity("Ewa Wach"));
 
             /**
              * Wyciągamy wszystkie encje zapisane w bazie danych
@@ -36,6 +39,18 @@ public class JpaBasic {
             TypedQuery<CoachEntity> query = entityManager.createQuery("from CoachEntity", CoachEntity.class);
             List<CoachEntity> coaches = query.getResultList();
             System.out.println("coaches = " + coaches);
+
+            /*entityManager.remove(coaches.get(coaches.size() - 1));
+
+            coaches = query.getResultList();
+            System.out.println("coaches = " + coaches);*/
+
+            entityManager.persist(new StudentEntity("Marek", 3));
+            entityManager.persist(new StudentEntity("Natalia", 1));
+            entityManager.persist(new StudentEntity("Józef", 3));
+
+            List<StudentEntity> students = entityManager.createQuery("from StudentEntity", StudentEntity.class).getResultList();
+            System.out.println("students = " + students);
 
             /**
              * commitujemy transakcję, wszystkie zmiany dotąd niezapisane w bazie muszą być zapisane

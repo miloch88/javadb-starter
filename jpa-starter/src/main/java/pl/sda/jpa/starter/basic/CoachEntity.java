@@ -22,25 +22,31 @@ public class CoachEntity {
      */
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
+    @Column(name = "name")
+    private String fullName;
 
-    public CoachEntity(String name) {
-        this.name = name;
+    /**
+     * Jedyny wymóg Hibernate to istnienie bezargumentowego konstruktora (najlepiej z widocznością pakietową albo public!)
+     */
+    CoachEntity() {}
+
+    public CoachEntity(String fullName) {
+        this.fullName = fullName;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
     @Override
     public String toString() {
         return "CoachEntity{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", fullName='" + fullName + '\'' +
                 '}';
     }
 }
