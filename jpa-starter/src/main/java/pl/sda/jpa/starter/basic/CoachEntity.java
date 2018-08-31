@@ -18,29 +18,35 @@ public class CoachEntity {
     /**
      * Adnotacja @GeneratedValue określa strategię generowania id czyli klucza głównego (PK)
      * W naszym przypadku korzystamy z funkcjonalności AUTO-INCREMENT bazy MySQL.
-     * Więcej: https://www.thoughts-on-java.org/jpa-generate-primary-keys/
+     * Więcej: http://www.onlinetutorialspoint.com/hibernate/generator-classes-in-hibernate.html
      */
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
+    @Column(name = "name")
+    private String fullName;
 
-    public CoachEntity(String name) {
-        this.name = name;
+    /**
+     * Jedyny wymóg Hibernate to istnienie bezargumentowego konstruktora (najlepiej z widocznością pakietową albo public!)
+     */
+    CoachEntity() {}
+
+    public CoachEntity(String fullName) {
+        this.fullName = fullName;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
     @Override
     public String toString() {
         return "CoachEntity{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", fullName='" + fullName + '\'' +
                 '}';
     }
 }
