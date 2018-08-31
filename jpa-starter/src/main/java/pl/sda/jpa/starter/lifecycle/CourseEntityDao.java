@@ -3,7 +3,6 @@ package pl.sda.jpa.starter.lifecycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.sda.commons.Utils;
-import pl.sda.jpa.starter.basic_entities.CourseEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
