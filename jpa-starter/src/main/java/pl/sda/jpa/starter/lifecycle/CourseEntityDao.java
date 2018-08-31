@@ -2,11 +2,9 @@ package pl.sda.jpa.starter.lifecycle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.sda.commons.Utils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -14,34 +12,8 @@ public class CourseEntityDao {
     private static Logger logger = LoggerFactory.getLogger(CourseEntityDao.class);
     private EntityManagerFactory entityManagerFactory;
 
-    public CourseEntityDao() {
-        entityManagerFactory = Persistence.createEntityManagerFactory("pl.sda.jpa.starter");
-    }
-
-    public void close() {
-        entityManagerFactory.close();
-    }
-
-    public static void main(String[] args) {
-        CourseEntityDao dao = new CourseEntityDao();
-        try {
-            dao.save(new CourseEntity("JavaGda1", "Rumia", Utils.parse("2018-01-01"), Utils.parse("2018-09-01")));
-
-            /*CourseEntity courseEntity = dao.findById(2);
-            courseEntity.setName("Kurs spadochronowy");
-            courseEntity.setPlace("Warszawa");
-            dao.update(courseEntity);*/
-
-            /*List<CourseEntity> courseEntities = dao.list();
-            if(!courseEntities.isEmpty()) {
-                dao.delete(courseEntities.get(0));
-            }*/
-
-        } catch (Exception e) {
-            logger.error("Error", e);
-        } finally {
-            dao.close();
-        }
+    public CourseEntityDao(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     public CourseEntity save(CourseEntity courseEntity) {
@@ -138,5 +110,4 @@ public class CourseEntityDao {
 
         return courseEntities;
     }
-
 }
