@@ -22,6 +22,9 @@ public class JpaBasic {
              * Do pracy z bazą danych potrzebujemy transakcji
              */
             EntityTransaction transaction = entityManager.getTransaction();
+            /**
+             * Zaczynamy nową transakcję, każda operacja na bazie danych musi być "otoczona" transakcją
+             */
             transaction.begin();
 
             /**
@@ -53,12 +56,12 @@ public class JpaBasic {
             System.out.println("students = " + students);
 
             /**
-             * commitujemy transakcję, wszystkie zmiany dotąd niezapisane w bazie muszą być zapisane
+             * Kończymy (commitujemy) transakcję - wszystkie dane powinny być zapisane w bazie
              */
             transaction.commit();
         } finally {
             /**
-             * kończymy pracę z entityManager, zamykamy go i tym samym zamykamy Persistence Context z nim związany
+             * Kończymy pracę z entityManager, zamykamy go i tym samym zamykamy Persistence Context z nim związany
              */
             if (entityManager != null) {
                 entityManager.close();

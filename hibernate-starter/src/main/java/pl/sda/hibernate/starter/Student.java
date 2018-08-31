@@ -1,4 +1,4 @@
-package pl.sda.hibernate.starter.pojo_entities;
+package pl.sda.hibernate.starter;
 
 public class Student {
     private Integer id;

@@ -1,4 +1,4 @@
-package pl.sda.jpa.starter;
+package pl.sda.jpa.starter.lifecycle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -139,4 +139,5 @@ public class CourseEntityDao {
 
         return courseEntities;
     }
+
 }

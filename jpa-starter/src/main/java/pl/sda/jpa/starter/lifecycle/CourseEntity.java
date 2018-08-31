@@ -1,4 +1,4 @@
-package pl.sda.jpa.starter.basic_entities;
+package pl.sda.jpa.starter.lifecycle;
 
 import pl.sda.commons.Utils;
 
