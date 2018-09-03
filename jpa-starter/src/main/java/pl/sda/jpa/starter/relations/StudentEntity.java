@@ -1,6 +1,8 @@
-package pl.sda.jpa.starter.related_entities;
+package pl.sda.jpa.starter.relations;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "students")
@@ -11,21 +13,21 @@ public class StudentEntity {
     private String name;
     private String seat;
 
-    @OneToOne//(cascade = {CascadeType.ALL})
-    //@JoinColumn(name = "add_id")
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "add_id")
     private AddressEntity address;
 
     /**
-     * Uwaga w adnotacji @ManyToOne brak atrybutu: mappedBy ! - w tej relacje zawsze strona to-many jest właścicielem!
+     * Uwaga w adnotacji @ManyToOne brak atrybutu: mappedBy ! - w tej relacje zawsze strona z @OneToMany jest właścicielem!
      */
-    /*@ManyToOne(cascade = {CascadeType.ALL})
-    private CourseEntity course;*/
+    @ManyToOne(cascade = {CascadeType.ALL})
+    private CourseEntity course;
 
-   /* @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "students_skills",
             joinColumns = {@JoinColumn(name ="student_id")},
             inverseJoinColumns = {@JoinColumn(name ="skill_id")})
-    private Set<SkillEntity> skills = new HashSet<>();*/
+    private Set<SkillEntity> skills = new HashSet<>();
 
     protected StudentEntity() {
     }
@@ -63,33 +65,33 @@ public class StudentEntity {
         /**
          * Jeżeli mamy relację dwukierunkową - sami musimy zadbać żeby obie strony miały ustawione dane
          */
-        //address.setStudent(this);
+        address.setStudent(this);
     }
 
-    /*public CourseEntity getCourse() {
+    public CourseEntity getCourse() {
         return course;
     }
 
     public void setCourse(CourseEntity course) {
         this.course = course;
-    }*/
+    }
 
-    /*public Set<SkillEntity> getSkills() {
+    public Set<SkillEntity> getSkills() {
         return skills;
     }
 
     public void addSkill(SkillEntity skill) {
         skills.add(skill);
-    }*/
+    }
 
     @Override
     public String toString() {
         return "StudentEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                // ", skills='" + skills + '\'' +
+                ", skills='" + skills + '\'' +
                 ", address=" + address +
-                // ", course=" + course +
+                ", course=" + ((course == null) ? "brak" : course.getName()) +
                 '}';
     }
 }

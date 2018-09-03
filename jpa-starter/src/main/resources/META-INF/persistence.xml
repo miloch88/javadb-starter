@@ -48,10 +48,10 @@
     </persistence-unit>
 
     <persistence-unit name="pl.sda.jpa.starter.relations">
-        <class>pl.sda.jpa.starter.related_entities.StudentEntity</class>
-        <class>pl.sda.jpa.starter.related_entities.AddressEntity</class>
-        <class>pl.sda.jpa.starter.related_entities.SkillEntity</class>
-        <class>pl.sda.jpa.starter.related_entities.CourseEntity</class>
+        <class>pl.sda.jpa.starter.relations.StudentEntity</class>
+        <class>pl.sda.jpa.starter.relations.AddressEntity</class>
+        <class>pl.sda.jpa.starter.relations.SkillEntity</class>
+        <class>pl.sda.jpa.starter.relations.CourseEntity</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
