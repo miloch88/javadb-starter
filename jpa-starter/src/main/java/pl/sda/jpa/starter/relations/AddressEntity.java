@@ -1,4 +1,4 @@
-package pl.sda.jpa.starter.related_entities;
+package pl.sda.jpa.starter.relations;
 
 import javax.persistence.*;
 
@@ -10,6 +10,8 @@ public class AddressEntity {
     private Integer id;
     private String city;
     private String street;
+    @OneToOne(mappedBy = "address")
+    private StudentEntity student;
 
     protected AddressEntity() {}
 
@@ -28,6 +30,14 @@ public class AddressEntity {
 
     public String getStreet() {
         return street;
+    }
+
+    public StudentEntity getStudent() {
+        return student;
+    }
+
+    public void setStudent(StudentEntity student) {
+        this.student = student;
     }
 
     @Override

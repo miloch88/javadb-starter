@@ -49,10 +49,10 @@
     </persistence-unit>
 
     <persistence-unit name="pl.sda.jpa.starter.relations">
-        <class>pl.sda.jpa.starter.related_entities.StudentEntity</class>
-        <class>pl.sda.jpa.starter.related_entities.AddressEntity</class>
-        <class>pl.sda.jpa.starter.related_entities.SkillEntity</class>
-        <class>pl.sda.jpa.starter.related_entities.CourseEntity</class>
+        <class>pl.sda.jpa.starter.relations.StudentEntity</class>
+        <class>pl.sda.jpa.starter.relations.AddressEntity</class>
+        <class>pl.sda.jpa.starter.relations.SkillEntity</class>
+        <class>pl.sda.jpa.starter.relations.CourseEntity</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
@@ -69,11 +69,11 @@
     </persistence-unit>
 
     <persistence-unit name="pl.sda.jpa.starter.queries">
-        <class>pl.sda.jpa.starter.entities.StudentEntity</class>
-        <class>pl.sda.jpa.starter.entities.SeatEntity</class>
-        <class>pl.sda.jpa.starter.entities.AddressEntity</class>
-        <class>pl.sda.jpa.starter.entities.SkillEntity</class>
-        <class>pl.sda.jpa.starter.entities.CourseEntity</class>
+        <class>pl.sda.jpa.starter.queries.entities.StudentEntity</class>
+        <class>pl.sda.jpa.starter.queries.entities.SeatEntity</class>
+        <class>pl.sda.jpa.starter.queries.entities.AddressEntity</class>
+        <class>pl.sda.jpa.starter.queries.entities.SkillEntity</class>
+        <class>pl.sda.jpa.starter.queries.entities.CourseEntity</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
@@ -92,7 +92,7 @@
     <persistence-unit name="pl.sda.jpa.starter.inheritance">
         <class>pl.sda.jpa.starter.inheritance.Coach</class>
         <class>pl.sda.jpa.starter.inheritance.Student</class>
-        <!--<class>pl.sda.jpa.starter.inheritance.Course</class>-->
+        <class>pl.sda.jpa.starter.inheritance.Course</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 

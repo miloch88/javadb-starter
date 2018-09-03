@@ -1,27 +1,39 @@
-package pl.sda.jpa.starter.related_entities;
-
+package pl.sda.jpa.starter.queries.entities;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "courses")
+@NamedQueries({
+        @NamedQuery(name="CourseEntity.findByCity" ,
+                query="SELECT c.name, c.place FROM CourseEntity c WHERE c.place = :place"),
+        @NamedQuery(name="CourseEntity.selectNameAndPlace" ,
+                query="SELECT c.name, c.place FROM CourseEntity c")
+})
 public class CourseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String place;
+    @Column(name = "start_date")
+    private Date startDate;
+    @Column(name = "end_date")
+    private Date endDate;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
     private Set<StudentEntity> students = new HashSet<>();
 
     CourseEntity() {}
 
-    public CourseEntity(String name, String place) {
+    public CourseEntity(String name, String place, Date startDate, Date endDate) {
         this.name = name;
         this.place = place;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public int getId() {
@@ -71,7 +83,7 @@ public class CourseEntity {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", place='" + place + '\'' +
-               // ", students=" + students +
+                ", students=" + students +
                 '}';
     }
 }

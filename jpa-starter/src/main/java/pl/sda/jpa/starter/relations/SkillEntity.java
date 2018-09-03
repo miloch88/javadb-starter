@@ -1,4 +1,4 @@
-package pl.sda.jpa.starter.entities;
+package pl.sda.jpa.starter.relations;
 
 import javax.persistence.*;
 

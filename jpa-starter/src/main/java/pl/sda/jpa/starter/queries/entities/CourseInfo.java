@@ -1,4 +1,4 @@
-package pl.sda.jpa.starter;
+package pl.sda.jpa.starter.queries.entities;
 
 public class CourseInfo {
     private String name;

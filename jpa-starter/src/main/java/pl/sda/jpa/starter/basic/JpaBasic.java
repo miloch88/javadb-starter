@@ -62,7 +62,9 @@ public class JpaBasic {
         } finally {
             /**
              * Kończymy pracę z entityManager, zamykamy go i tym samym zamykamy Persistence Context z nim związany
+             * Czemu EntityManager nie implementuje AutoClosable? https://github.com/javaee/jpa-spec/issues/77
              */
+
             if (entityManager != null) {
                 entityManager.close();
                 entityManagerFactory.close();

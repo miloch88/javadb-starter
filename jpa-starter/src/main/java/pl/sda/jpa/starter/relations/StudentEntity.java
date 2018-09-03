@@ -1,4 +1,4 @@
-package pl.sda.jpa.starter.entities;
+package pl.sda.jpa.starter.relations;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,16 +12,20 @@ public class StudentEntity {
     private Integer id;
     private String name;
 
-    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.ALL})
     private SeatEntity seat;
 
-    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "add_id")
     private AddressEntity address;
 
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    /**
+     * Uwaga w adnotacji @ManyToOne brak atrybutu: mappedBy ! - w tej relacje zawsze strona z @OneToMany jest właścicielem!
+     */
+    @ManyToOne(cascade = {CascadeType.ALL})
     private CourseEntity course;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "students_skills",
             joinColumns = {@JoinColumn(name ="student_id")},
             inverseJoinColumns = {@JoinColumn(name ="skill_id")})
@@ -50,36 +54,36 @@ public class StudentEntity {
         return seat;
     }
 
-    public StudentEntity setSeat(SeatEntity seat) {
+    public void setSeat(SeatEntity seat) {
         this.seat = seat;
-        return this;
     }
 
     public AddressEntity getAddress() {
         return address;
     }
 
-    public StudentEntity setAddress(AddressEntity address) {
+    public void setAddress(AddressEntity address) {
         this.address = address;
-        return this;
+        /**
+         * Jeżeli mamy relację dwukierunkową - sami musimy zadbać żeby obie strony miały ustawione dane
+         */
+        address.setStudent(this);
     }
 
     public CourseEntity getCourse() {
         return course;
     }
 
-    public StudentEntity setCourse(CourseEntity course) {
+    public void setCourse(CourseEntity course) {
         this.course = course;
-        return this;
     }
 
     public Set<SkillEntity> getSkills() {
         return skills;
     }
 
-    public StudentEntity addSkill(SkillEntity skill) {
+    public void addSkill(SkillEntity skill) {
         skills.add(skill);
-        return this;
     }
 
     @Override
@@ -90,7 +94,7 @@ public class StudentEntity {
                 ", seat='" + seat + '\'' +
                 ", skills='" + skills + '\'' +
                 ", address=" + address +
-                ", course=" + course +
+                ", course=" + ((course == null) ? "brak" : course.getName()) +
                 '}';
     }
 }
