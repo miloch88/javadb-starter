@@ -213,5 +213,4 @@ public class JpaRelations {
             jpaQueries.close();
         }
     }
-    }
 }
