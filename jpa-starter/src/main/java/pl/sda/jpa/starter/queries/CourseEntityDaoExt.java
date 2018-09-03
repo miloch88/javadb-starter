@@ -1,9 +1,9 @@
-package pl.sda.jpa.starter;
+package pl.sda.jpa.starter.queries;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.sda.jpa.starter.entities.CourseEntity;
-import pl.sda.jpa.starter.entities.EntitiesLoader;
+import pl.sda.jpa.starter.queries.entities.CourseEntity;
+import pl.sda.jpa.starter.queries.entities.EntitiesLoader;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

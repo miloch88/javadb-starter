@@ -1,10 +1,11 @@
-package pl.sda.jpa.starter;
+package pl.sda.jpa.starter.queries;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.sda.jpa.starter.entities.CourseEntity;
-import pl.sda.jpa.starter.entities.EntitiesLoader;
-import pl.sda.jpa.starter.entities.StudentEntity;
+import pl.sda.jpa.starter.queries.entities.CourseEntity;
+import pl.sda.jpa.starter.queries.entities.CourseInfo;
+import pl.sda.jpa.starter.queries.entities.EntitiesLoader;
+import pl.sda.jpa.starter.queries.entities.StudentEntity;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -27,19 +28,6 @@ public class JpaQueries {
         entityManagerFactory.close();
     }
 
-    public static void main(String[] args) {
-        JpaQueries jpaQueries = new JpaQueries();
-        try {
-            EntitiesLoader.fillDataBase(jpaQueries.getEntityManagerFactory());
-            //jpaQueries.simpleQuery();
-            //jpaQueries.relationsQuery();
-        } catch (Exception e) {
-            logger.error("", e);
-        } finally {
-            jpaQueries.close();
-        }
-    }
-
     private void simpleQuery() {
         EntityManager entityManager = null;
         try {
@@ -49,7 +37,7 @@ public class JpaQueries {
             /**
              *  krótka forma: "FROM CourseEntity"
              */
-            Query simpleQuery = entityManager.createQuery("SELECT c FROM CourseEntity c");
+            Query simpleQuery = entityManager.createQuery("SELECT c FROM CourseEntity c JOIN c.students");
             List resultList = simpleQuery.getResultList();
             printList(resultList);
 
@@ -88,7 +76,7 @@ public class JpaQueries {
             /**
              *  zawężamy tylko do kursów z Sopotu i wrzucamy dane do obiektu CourseInfo
              */
-            List<CourseInfo> courseInfoList = entityManager.createQuery("SELECT new pl.sda.jpa.starter.CourseInfo(c.name, c.place) FROM CourseEntity c WHERE c.place = :place", CourseInfo.class)
+            List<CourseInfo> courseInfoList = entityManager.createQuery("SELECT new pl.sda.jpa.starter.queries.entities.CourseInfo(c.name, c.place) FROM CourseEntity c WHERE c.place = :place", CourseInfo.class)
                     .setParameter("place", "Sopot")
                     .getResultList();
             printList(courseInfoList);
@@ -120,9 +108,6 @@ public class JpaQueries {
 
             entityManager.getTransaction().commit();
         } finally {
-            /**
-             *  czemu EntityManage nie implementuje AutoClosable? https://github.com/javaee/jpa-spec/issues/77
-             */
             if (entityManager != null) {
                 entityManager.close();
             }
@@ -188,5 +173,18 @@ public class JpaQueries {
                         }
                 )
                 .collect(Collectors.joining("\n")));
+    }
+
+    public static void main(String[] args) {
+        JpaQueries jpaQueries = new JpaQueries();
+        try {
+            EntitiesLoader.fillDataBase(jpaQueries.getEntityManagerFactory());
+            jpaQueries.simpleQuery();
+            //jpaQueries.relationsQuery();
+        } catch (Exception e) {
+            logger.error("", e);
+        } finally {
+            jpaQueries.close();
+        }
     }
 }

@@ -1,4 +1,4 @@
-package pl.sda.jpa.starter.entities;
+package pl.sda.jpa.starter.queries.entities;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -83,7 +83,7 @@ public class CourseEntity {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", place='" + place + '\'' +
-               // ", students=" + students +
+                ", students=" + students +
                 '}';
     }
 }

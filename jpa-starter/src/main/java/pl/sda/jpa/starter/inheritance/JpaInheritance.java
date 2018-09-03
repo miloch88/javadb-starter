@@ -1,9 +1,8 @@
-package pl.sda.jpa.starter;
+package pl.sda.jpa.starter.inheritance;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.sda.jpa.starter.inheritance.Coach;
-import pl.sda.jpa.starter.inheritance.Student;
+import pl.sda.jpa.starter.queries.JpaQueries;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

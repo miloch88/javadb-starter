@@ -1,4 +1,4 @@
-package pl.sda.jpa.starter.entities;
+package pl.sda.jpa.starter.queries.entities;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -90,7 +90,7 @@ public class StudentEntity {
                 ", seat='" + seat + '\'' +
                 ", skills='" + skills + '\'' +
                 ", address=" + address +
-                ", course=" + course +
+                ", course=" + ((course == null) ? "brak" : course.getName()) +
                 '}';
     }
 }
