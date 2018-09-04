@@ -2,10 +2,7 @@ package pl.sda.jpa.starter.queries;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.sda.jpa.starter.queries.entities.CourseEntity;
-import pl.sda.jpa.starter.queries.entities.CourseInfo;
-import pl.sda.jpa.starter.queries.entities.EntitiesLoader;
-import pl.sda.jpa.starter.queries.entities.StudentEntity;
+import pl.sda.jpa.starter.queries.entities.*;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -114,6 +111,50 @@ public class JpaQueries {
         }
     }
 
+    private void additionalQueries() {
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+
+            /**
+             * wyświetli wszystkich studentów posortowanych rosnąco po nazwie
+             */
+            TypedQuery<StudentEntity> typedQuery = entityManager.createQuery("SELECT s FROM StudentEntity s ORDER BY s.name ASC", StudentEntity.class);
+            List<StudentEntity> students = typedQuery.getResultList();
+            printList(students);
+
+            /**
+             * wyświetli trzech ostatnich studentów posortowanych malejąco
+             */
+            typedQuery = entityManager.createQuery("SELECT s FROM StudentEntity s ORDER BY s.name DESC", StudentEntity.class);
+            typedQuery.setFirstResult(4);
+            typedQuery.setMaxResults(3);
+            students = typedQuery.getResultList();
+            printList(students);
+
+            /**
+             * wyświetli tylko studentów (tylko nazwy) którzy mają więcej niż 25 lat
+             */
+            TypedQuery<Object[]> scalarQuery = entityManager.createQuery("SELECT s.name FROM StudentEntity s WHERE s.age > :age", Object[].class);
+            scalarQuery.setParameter("age", 25);
+            printList(scalarQuery.getResultList());
+
+            /**
+             * wyświetli wiek i ilość studentów w tym wieku na podstawie tabelki students
+             * dane należy pobrać jako listę obiektów klasy (stwórz tą klasę): StudentsStats z polami: age, studentsNumber
+             */
+            String query = "SELECT new pl.sda.jpa.starter.queries.entities.StudentsStats(s.age, COUNT(s.id)) FROM StudentEntity s GROUP BY s.age";
+            TypedQuery<StudentsStats> studentsStatsTypedQuery = entityManager.createQuery(query, StudentsStats.class);
+            printList(studentsStatsTypedQuery.getResultList());
+
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
     private void relationsQuery() {
         EntityManager entityManager = null;
         try {
@@ -179,7 +220,8 @@ public class JpaQueries {
         JpaQueries jpaQueries = new JpaQueries();
         try {
             EntitiesLoader.fillDataBase(jpaQueries.getEntityManagerFactory());
-            jpaQueries.simpleQuery();
+            //jpaQueries.simpleQuery();
+            jpaQueries.additionalQueries();
             //jpaQueries.relationsQuery();
         } catch (Exception e) {
             logger.error("", e);
