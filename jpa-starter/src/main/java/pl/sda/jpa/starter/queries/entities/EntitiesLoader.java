@@ -30,6 +30,7 @@ public class EntitiesLoader {
 
             StudentEntity kowalski = new StudentEntity("Jan Kowalski");
             kowalski.setCourse(javaGda1)
+                    .setAge(20)
                     .setAddress(new AddressEntity("Sopot", "Malinowa 1/3"))
                     .addSkill(hibernateMaster)
                     .addSkill(jdbcMaster)
@@ -38,6 +39,7 @@ public class EntitiesLoader {
 
             StudentEntity malinowski = new StudentEntity("Adam Malinowski");
             malinowski.setCourse(javaGda1)
+                    .setAge(30)
                     .setAddress(new AddressEntity("Gdańsk", "Jantarowa 3/3"))
                     .addSkill(hibernateMaster)
                     .addSkill(jdbcMaster)
@@ -47,6 +49,7 @@ public class EntitiesLoader {
 
             StudentEntity nowak = new StudentEntity("Eliza Nowak");
             nowak.setCourse(javaGda1)
+                    .setAge(20)
                     .setAddress(new AddressEntity("Sopot", "Haffera 23/3"))
                     .addSkill(oopMaster)
                     .setSeat(new SeatEntity("A", 4, 2));
@@ -54,6 +57,7 @@ public class EntitiesLoader {
 
             StudentEntity zloto = new StudentEntity("Urszula Złoto");
             zloto.setCourse(javaGda1)
+                    .setAge(18)
                     .setAddress(new AddressEntity("Rumia", "Srebrna 103"))
                     .addSkill(oopMaster)
                     .addSkill(testsMaster)
@@ -63,6 +67,7 @@ public class EntitiesLoader {
 
             StudentEntity rolnik = new StudentEntity("Wiesław Rolnik");
             rolnik.setCourse(javaGda6)
+                    .setAge(30)
                     .setAddress(new AddressEntity("Kościerzyna", "Mała 4"))
                     .addSkill(oopMaster)
                     .addSkill(testsMaster)
@@ -74,12 +79,14 @@ public class EntitiesLoader {
 
             StudentEntity szybki = new StudentEntity("Mieczysław Szybki");
             szybki.setCourse(javaGda6)
+                    .setAge(50)
                     .setAddress(new AddressEntity("Kościerzyna", "Duża 14"))
                     .setSeat(new SeatEntity("B", 3, 1));
             entityManager.persist(szybki);
 
             StudentEntity szara = new StudentEntity("Wioletta Szara");
             szara.setCourse(javaGda15)
+                    .setAge(20)
                     .setAddress(new AddressEntity("Pruszcz Gdański", "Polna 4/8"))
                     .addSkill(testsMaster)
                     .addSkill(jvmMaster)
