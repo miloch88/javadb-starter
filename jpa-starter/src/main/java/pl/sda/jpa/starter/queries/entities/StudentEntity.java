@@ -11,6 +11,7 @@ public class StudentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    private int age;
 
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private SeatEntity seat;
@@ -44,6 +45,15 @@ public class StudentEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public StudentEntity setAge(int age) {
+        this.age = age;
+        return this;
     }
 
     public SeatEntity getSeat() {
