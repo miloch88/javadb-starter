@@ -13,10 +13,11 @@ import java.util.Properties;
 public class ConnectionFactory {
     private static Logger logger = LoggerFactory.getLogger(ConnectionFactory.class);
 
-    //Tutaj może być singleton, ale my tworzymy coś innego
+    //Tutaj może być singleton, ale my tworzymy Factory
 
     private MysqlDataSource dataSource;
 
+    //konstrukotr Factory
     public ConnectionFactory(String filename) {
 
         try {
@@ -39,8 +40,9 @@ public class ConnectionFactory {
         }
     }
 
+    //konstruktor domyślny
     public ConnectionFactory(){
-        //crtl + spacja szuka
+        //crtl + spacja szuka plików
         this("/database.properties");
     }
 
@@ -66,13 +68,14 @@ public class ConnectionFactory {
         return properties;
     }
 
-    //Taki który trzeba obsłyżć check "Niech się inni martwią"
+    //Exception taki który trzeba obsłyżć check "Niech się inni martwią"
     public Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
 
     public static void main(String[] args) throws SQLException {
 
+        //podajemy adres do nowego 'properties'
         ConnectionFactory connectionFactory =new ConnectionFactory("/remote-database.properties");
         Connection connection = connectionFactory.getConnection();
         logger.info(connection.getCatalog());

@@ -15,16 +15,17 @@ public class ConnectionViaDriverManager {
      * <b>{{prefix}//{adres_serwera}:{port}/{nazwa_bazy_danych}?{parametry}</b><br /><br />
      * np.: jdbc:mysql://localhost:3306/jdbc_test?useSSL=false&serverTimezone=Europe/Warsaw<br />
      * <br />
-     * <b>{prefix}</b> - identyfikuje rodzaj bazy danych z którą chcemy się połączyć, dzięki niemu można znaleźć odpowiedni sterownik do bazy <br />
+     * <b>{prefix}</b> - identyfikuje rodzaj bazy danych z którą chcemy się połączyć, dzięki niemu można znaleźć
+     * odpowiedni sterownik do bazy <br />
      * <b>{adres_serwera}</b> - oznacza domenę lub adres IP serwera na którym znajduje się serwer bazy danych<br />
      * <b>{port}</b> - port pod którym znajduje się baza danych, dla MySQL domyślnym portem jest: 3306<br />
      * <b>{nazwa_bazy_danych}</b> - nazwa bazy z którą chcemy się połączyć<br />
      * <b>{parametry}</b> - dodatkowe parametry, które chcemy przekazać przy łączeniu się z bazą - są opcjonalne<br />
      */
-    private static final String DB_URL = "";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/cwiczenia?serverTimezone=Europe/Warsaw";
 
-    private static final String DB_USER = "";
-    private static final String DB_PASSWORD = "";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "miloch";
 
     public static void main(String[] args) {
         try {

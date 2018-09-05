@@ -10,6 +10,7 @@ import java.sql.SQLException;
 public class ConnectionViaDataSource {
     private static Logger logger = LoggerFactory.getLogger(ConnectionViaDataSource.class);
 
+    //konfiguracja połączenia z bazą danych:
     private static final String DB_SERVER_NAME = "localhost";
     private static final String DB_NAME = "cwiczenia";
     private static final String DB_USER = "root";
@@ -41,6 +42,9 @@ public class ConnectionViaDataSource {
         /**
          * Krok 2: Otwieramy połączenie do bazy danych
          */
+
+//        Zadanie 2.1 try-with-resources
+
 //        Connection connection = null;
 //        try {
 //            connection = dataSource.getConnection();
@@ -60,6 +64,7 @@ public class ConnectionViaDataSource {
              */
             logger.error("Error during using connection", e);
         }
+
 //        finally {
 //            /**
 //             * Krok 5: Zawsze zamykamy połączenie po skończonej pracy!
@@ -72,5 +77,6 @@ public class ConnectionViaDataSource {
 //                logger.error("Error during closing connection", e);
 //            }
 //        }
+
     }
 }
