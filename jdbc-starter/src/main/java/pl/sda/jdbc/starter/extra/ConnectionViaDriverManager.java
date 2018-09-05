@@ -24,6 +24,7 @@ public class ConnectionViaDriverManager {
      */
     private static final String DB_URL = "jdbc:mysql://localhost:3306/cwiczenia?serverTimezone=Europe/Warsaw";
 
+
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "miloch";
 
