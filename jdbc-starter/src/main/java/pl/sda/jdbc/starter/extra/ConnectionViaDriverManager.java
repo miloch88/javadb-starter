@@ -22,7 +22,7 @@ public class ConnectionViaDriverManager {
      * <b>{nazwa_bazy_danych}</b> - nazwa bazy z którą chcemy się połączyć<br />
      * <b>{parametry}</b> - dodatkowe parametry, które chcemy przekazać przy łączeniu się z bazą - są opcjonalne<br />
      */
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/cwiczenia?serverTimezone=Europe/Warsaw";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/cwiczenia?useSSL=false&serverTimezone=Europe/Warsaw";
 
 
     private static final String DB_USER = "root";

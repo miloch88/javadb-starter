@@ -34,6 +34,7 @@ public class ConnectionFactory {
             dataSource.setServerTimezone("Europe/Warsaw");
             dataSource.setUseSSL(false);
             dataSource.setCharacterEncoding("UTF-8");
+            dataSource.setAllowMultiQueries(true);
         } catch (SQLException e) {
             logger.error("Error during creating MysqlDataSource", e);
             return;
