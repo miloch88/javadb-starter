@@ -46,28 +46,30 @@ public class SqlInjectionSample {
         }
     }
 
-    public static void main (String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException {
         SqlInjectionSample sample = new SqlInjectionSample();
 
-        //sample.createTable();
+//        sample.createTable();
 
-        /*sample.addAdmin("top", "secret");
-        System.out.println("admin = " + sample.findAdmin("top", "secret"));
-        System.out.println("not-admin = " + sample.findAdmin("top", "123"));*/
+//        sample.addAdmin("top", "secret");
 
-        //dodanie OR'a
-        /*String admin = sample.findAdmin("", "' OR 1='1");
-        System.out.println("admin = " + admin);*/
+//        System.out.println("admin = " + sample.findAdmin("top", "secret"));
+//        System.out.println("not-admin = " + sample.findAdmin("top", "123"));
 
-        //dodanie znaku początku komentarza
-        /*String admin = sample.findAdmin("top'#", "123");
-        System.out.println("admin = " + admin);*/
+//        dodanie OR'a (Musi być prawdą, skąd przechodzi 1='1');
+//        String admin = sample.findAdmin("", "' OR 1='1");
+//        System.out.println("admin = " + admin);
 
-        //połączenie OR'a i komentarzy
-        /*String admin = sample.findAdmin("' OR 1=1;#", "123");
-        System.out.println("admin = " + admin);*/
+//        dodanie znaku początku komentarza, '#' ucina wszysko za znakiem
+//        String admin = sample.findAdmin("top'#", "123");
+//        System.out.println("admin = " + admin);
+
+//        połączenie OR'a i komentarzy
+//        String admin = sample.findAdmin("' OR 1=1;#", "123");
+//        System.out.println("admin = " + admin);
 
         //MultiQueries
-        /*sample.addAdmin("123", "');DROP TABLE admins;#");*/
+//        sample.addAdmin("123", "');DROP TABLE admins;#");
+
     }
 }

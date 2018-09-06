@@ -3,11 +3,11 @@ package pl.sda.jdbc.starter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.Date;
+
+import static java.time.LocalDate.now;
 
 public class CoursesManager {
 
@@ -22,28 +22,58 @@ public class CoursesManager {
     public void createCoursesTable() throws SQLException {
 
         try (Connection connection = connectionFactory.getConnection();
-             Statement statement = connection.createStatement())
-        {
+             Statement statement = connection.createStatement()) {
 //            String query1 = "DROP TABLE IF EXISTS courses CASCADE;";
 //
 //            statement.executeUpdate(query1);
 
-            //CREATE TABLE IF NOT EXISTS
             String query2 = "CREATE TABLE IF NOT EXISTS courses(" +
-                            "id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY," +
-                            "name VARCHAR(50)," +
-                            "place VARCHAR(50)," +
-                            "start_date DATE," +
-                            "end_date DATE);" ;
+                    "id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                    "name VARCHAR(50)," +
+                    "place VARCHAR(50)," +
+                    "start_date DATE," +
+                    "end_date DATE);";
 
             statement.executeUpdate(query2);
 
-            String query3 = "INSERT INTO courses (name, place, start_date, end_date)" +
-                            "VALUES" +
-                            " ('Java od podstaw', 'Gdańsk', '2018-06-12', '2018-11-07')," +
-                            " ('C++ od podstaw', 'Sopot', now(), '2018-12-15');";
+//            String query3 = "INSERT INTO courses (name, place, start_date, end_date)" +
+//                    "VALUES" +
+//                    " ('Java od podstaw', 'Gdańsk', '2018-06-12', '2018-11-07')," +
+//                    " ('C++ od podstaw', 'Sopot', now(), '2018-12-15');";
+//
+//            statement.executeUpdate(query3);
 
-            statement.executeUpdate(query3);
+            String query3 = "INSERT INTO courses (name, place, start_date, end_date) VALUES (?,?,?,?)";
+
+            try (PreparedStatement ps = connection.prepareStatement(query3)) {
+
+                ps.setString(1, "Java od podstaw");
+                ps.setString(2, "Gdańsk");
+                ps.setString(3, "2018-06-12");
+                ps.setString(4, "2018-11-07");
+
+                ps.executeUpdate();
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(query3)) {
+
+                ps.setString(1, "C++ od podstaw");
+                ps.setString(2, "Sopot");
+                ps.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
+                ps.setDate(4, java.sql.Date.valueOf(LocalDate.of(2018, 12, 15)));
+
+                ps.executeUpdate();
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(query3)) {
+
+                ps.setString(1, "Kurs szydełkowania");
+                ps.setString(2, "Gdynia");
+                ps.setString(3, "2018-01-01");
+                ps.setString(4, "2018-12-31");
+
+                ps.executeUpdate();
+            }
 
         }
 
@@ -52,56 +82,196 @@ public class CoursesManager {
     public void createStudentsTable() throws SQLException {
 
         try (Connection connection = connectionFactory.getConnection();
-             Statement statement = connection.createStatement())
-        {
-            String query =  "CREATE TABLE IF NOT EXISTS students(" +
-                            "id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY," +
-                            "name VARCHAR(50)," +
-                            "course_id INT," +
-                            "description VARCHAR(200)," +
-                            "seat VARCHAR(10)," +
-                            "FOREIGN KEY (course_id) REFERENCES courses(id)" +
-                            ");";
+             Statement statement = connection.createStatement()) {
+            String query = "CREATE TABLE IF NOT EXISTS students(" +
+                    "id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                    "name VARCHAR(50)," +
+                    "course_id INT," +
+                    "description VARCHAR(200)," +
+                    "seat VARCHAR(10)," +
+                    "FOREIGN KEY (course_id) REFERENCES courses(id)" +
+                    ");";
 
             statement.executeUpdate(query);
 
-            String query1 = "INSERT INTO students (name, course_id, description, seat)" +
-                    "VALUES ('Michał', 1, 'Co ja tutaj robię!', 'B.2.1')," +
-                    "('Tomek', null, 'Nudzi mi się!', 'A.1.2'), " +
-                    "('Jaromir', 1, 'Potrzebuję kasy!', 'A.2.2')," +
-                    "('Klaudia', 2, 'Mama mi kazała!', 'C.2.2')," +
-                    "('Mateusz', 2, 'Kurs szydełkowania był już zajęty!', 'D.2.1');";
+//            String query1 = "INSERT INTO students (name, course_id, description, seat)" +
+//                    "VALUES ('Michał', 1, 'Co ja tutaj robię!', 'B.2.1')," +
+//                    "('Tomek', null, 'Nudzi mi się!', 'A.1.2'), " +
+//                    "('Jaromir', 1, 'Potrzebuję kasy!', 'A.2.2')," +
+//                    "('Klaudia', 2, 'Mama mi kazała!', 'C.2.2')," +
+//                    "('Mateusz', 2, 'Kurs szydełkowania był już zajęty!', 'D.2.1');";
+//
+//            statement.executeUpdate(query1);
 
-            statement.executeUpdate(query1);
+            String query1 = "INSERT INTO students (name, course_id, description, seat) VALUES (?,?,?,?)";
+
+            try (PreparedStatement ps = connection.prepareStatement(query1)) {
+
+                ps.setString(1, "Michał");
+                ps.setInt(2, 1);
+                ps.setString(3, "Co ja tutuaj robię?");
+                ps.setString(4, "B.2.1");
+
+                ps.executeUpdate();
+
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(query1)) {
+
+                ps.setString(1, "Tomek");
+                ps.setInt(2, 1);
+                ps.setString(3, "Nudzi mi się!");
+                ps.setString(4, "A.1.2");
+
+                ps.executeUpdate();
+
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(query1)) {
+
+                ps.setString(1, "Jaromir");
+                ps.setInt(2, 1);
+                ps.setString(3, "Potrzebuję kasy!");
+                ps.setString(4, "A.2.2");
+
+                ps.executeUpdate();
+
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(query1)) {
+
+                ps.setString(1, "Klaudia");
+                ps.setInt(2, 2);
+                ps.setString(3, "Mama mi kazała!");
+                ps.setString(4, "C.2.2");
+
+                ps.executeUpdate();
+
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(query1)) {
+
+                ps.setString(1, "Mateusz");
+                ps.setInt(2, 2);
+                ps.setString(3, "Kurs szydełkowania był już zajęty");
+                ps.setString(4, "D.2.1");
+
+                ps.executeUpdate();
+
+            }
+
         }
     }
 
     public void createAttendanceListTable() throws SQLException {
 
         try (Connection connection = connectionFactory.getConnection();
-             Statement statement = connection.createStatement())
-        {
-            String query =  "CREATE TABLE IF NOT EXISTS attendance_list(" +
-                            "id	INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY," +
-                            "student_id	INT," +
-                            "course_id INT," +
-                            "date DATETIME," +
-                            "FOREIGN KEY (course_id) REFERENCES courses(id)," +
-                            "FOREIGN KEY (student_id) REFERENCES students(id));";
+             Statement statement = connection.createStatement()) {
+            String query = "CREATE TABLE IF NOT EXISTS attendance_list(" +
+                    "id	INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                    "student_id	INT," +
+                    "course_id INT," +
+                    "date DATETIME," +
+                    "FOREIGN KEY (course_id) REFERENCES courses(id)," +
+                    "FOREIGN KEY (student_id) REFERENCES students(id));";
 
             statement.executeUpdate(query);
+
+//            String query1 = "INSERT INTO attendance_list (student_id, course_id, date)" +
+//                    "VALUES " +
+//                    "(1, 1, '2018-09-05')," +
+//                    "(3, 1, '2018-09-05'), " +
+//                    "(4, 2, '2018-09-05')," +
+//                    "(5, 2, '2018-09-05')," +
+//                    "(1, 2, '2018-09-06')," +
+//                    "(3, 2, '2018-09-06')," +
+//                    "(5, 2, '2018-09-06');";
+//
+//            statement.executeUpdate(query1);
+
+            String query1 = "INSERT INTO attendance_list (student_id, course_id, date) VALUES (?,?,?)";
+
+            try (PreparedStatement ps = connection.prepareStatement(query1)) {
+
+                ps.setInt(1, 1);
+                ps.setInt(2, 2);
+                ps.setDate(3, java.sql.Date.valueOf(LocalDate.of(2018, 9, 05)));
+
+                ps.executeUpdate();
+
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(query1)) {
+
+                ps.setInt(1, 3);
+                ps.setInt(2, 1);
+                ps.setDate(3, java.sql.Date.valueOf(LocalDate.of(2018, 9, 05)));
+
+                ps.executeUpdate();
+
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(query1)) {
+
+                ps.setInt(1, 4);
+                ps.setInt(2, 2);
+                ps.setDate(3, java.sql.Date.valueOf(LocalDate.of(2018, 9, 05)));
+
+                ps.executeUpdate();
+
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(query1)) {
+
+                ps.setInt(1, 5);
+                ps.setInt(2, 2);
+                ps.setDate(3, java.sql.Date.valueOf(LocalDate.of(2018, 9, 05)));
+
+                ps.executeUpdate();
+
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(query1)) {
+
+                ps.setInt(1, 1);
+                ps.setInt(2, 1);
+                ps.setDate(3, java.sql.Date.valueOf(LocalDate.of(2018, 9, 06)));
+
+                ps.executeUpdate();
+
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(query1)) {
+
+                ps.setInt(1, 3);
+                ps.setInt(2, 2);
+                ps.setDate(3, java.sql.Date.valueOf(LocalDate.of(2018, 9, 06)));
+
+                ps.executeUpdate();
+
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(query1)) {
+
+                ps.setInt(1, 5);
+                ps.setInt(2, 2);
+                ps.setDate(3, java.sql.Date.valueOf(LocalDate.of(2018, 9, 06)));
+
+                ps.executeUpdate();
+
+            }
+
         }
     }
 
     public void dropAllTables() throws SQLException {
 
         try (Connection connection = connectionFactory.getConnection();
-             Statement statement = connection.createStatement())
-        {
+             Statement statement = connection.createStatement()) {
             // dataSource.setAllowMultiQueries(true) w klasie Connection Factory
-            String query =  "DROP TABLE IF EXISTS attendance_list CASCADE;" +
-                            "DROP TABLE IF EXISTS students CASCADE;" +
-                            "DROP TABLE IF EXISTS courses CASCADE;";
+            String query = "DROP TABLE IF EXISTS attendance_list CASCADE;" +
+                    "DROP TABLE IF EXISTS students CASCADE;" +
+                    "DROP TABLE IF EXISTS courses CASCADE;";
 
             statement.executeUpdate(query);
         }
@@ -111,12 +281,11 @@ public class CoursesManager {
     public void printAllCourses() throws SQLException {
 
         try (Connection connection = connectionFactory.getConnection();
-             Statement statement = connection.createStatement())
-        {
+             Statement statement = connection.createStatement()) {
 
-            String query =  "SELECT * FROM courses;";
+            String query = "SELECT * FROM courses;";
             ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 String place = resultSet.getString("place");
@@ -131,12 +300,11 @@ public class CoursesManager {
     public void printAllStudents() throws SQLException {
 
         try (Connection connection = connectionFactory.getConnection();
-             Statement statement = connection.createStatement())
-        {
+             Statement statement = connection.createStatement()) {
 
-            String query =  "SELECT * FROM students s LEFT JOIN courses c ON s.course_id = c.id;";
+            String query = "SELECT * FROM students s LEFT JOIN courses c ON s.course_id = c.id;";
             ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 int id = resultSet.getInt("s.id");
                 String name = resultSet.getString("s.name");
                 int course_id = resultSet.getInt("s.course_id");
@@ -154,22 +322,54 @@ public class CoursesManager {
         }
     }
 
+    public void printAttendanceList() throws SQLException {
+
+        try (Connection connection = connectionFactory.getConnection();
+             Statement statement = connection.createStatement()) {
+
+            String query = "SELECT s.name, c.name, a.date FROM students s " +
+                    "LEFT JOIN courses c ON s.course_id = c.id " +
+                    "LEFT JOIN attendance_list a ON a.student_id = s.id;";
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                String name = resultSet.getString("s.name");
+                String name_course = resultSet.getString("c.name");
+                Date attendanceDate = resultSet.getDate("a.date");
+
+                if (name_course == null) {
+                    name_course = "Brak kursu";
+                }
+
+                logger.info("name: {}, name course: {}, attendane date: {}",
+                        name, name_course, attendanceDate);
+            }
+        }
+    }
+
     public static void main(String[] args) throws SQLException {
 
         ConnectionFactory connectionFactory = new ConnectionFactory("/sda_courses.database.properties");
         CoursesManager coursesManager = new CoursesManager(connectionFactory);
 
+        //Usuwanie tablic
+        coursesManager.dropAllTables();
+
+        //Tworzenie nowch tablic
         coursesManager.createCoursesTable();
         coursesManager.createStudentsTable();
         coursesManager.createAttendanceListTable();
-
-        coursesManager.dropAllTables();
 
         coursesManager.printAllCourses();
 
         System.out.println();
 
         coursesManager.printAllStudents();
+
+        System.out.println();
+
+        coursesManager.printAttendanceList();
 
     }
 }
