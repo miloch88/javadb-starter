@@ -7,8 +7,6 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-import static java.time.LocalDate.now;
-
 public class CoursesManager {
 
     private static Logger logger = LoggerFactory.getLogger(CoursesManager.class);
@@ -79,6 +77,46 @@ public class CoursesManager {
 
     }
 
+    public void updateCourseName(int id, String name) throws SQLException {
+
+        String query = "UPDATE  courses SET name= ? WHERE id= ?";
+
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, name);
+            ps.setInt(2, id);
+
+            ps.executeUpdate();
+        }
+    }
+
+//    public void printAllStudentsFromCourse(int id) throws SQLException {
+//
+//        try (Connection connection = connectionFactory.getConnection();
+//             Statement statement = connection.createStatement()) {
+//
+//            String query = "SELECT * FROM students s LEFT JOIN courses c ON s.course_id = c.id WHERE c.id = ?;";
+//            ResultSet resultSet = statement.executeQuery(query);
+//
+//            while (resultSet.next()) {
+//                int id = resultSet.getInt("s.id");
+//                String name = resultSet.getString("s.name");
+//                int course_id = resultSet.getInt("s.course_id");
+//                String description = resultSet.getString("s.description");
+//                String seat = resultSet.getString("s.seat");
+//                String name_course = resultSet.getString("c.name");
+//
+//                if (name_course == null) {
+//                    name_course = "Brak kursu";
+//                }
+//
+//                logger.info("id: {}, name: {}, course id: {}, description: {}, seat: {}, name course: {}",
+//                        id, name, course_id, description, seat, name_course);
+//            }
+//        }
+//    }
+
     public void createStudentsTable() throws SQLException {
 
         try (Connection connection = connectionFactory.getConnection();
@@ -93,72 +131,59 @@ public class CoursesManager {
                     ");";
 
             statement.executeUpdate(query);
+        }
+    }
 
-//            String query1 = "INSERT INTO students (name, course_id, description, seat)" +
+    public void addStudent(String name, Integer course_id, String description, String seat) throws SQLException {
+
+        String query = "INSERT INTO students (name, course_id, description, seat) VALUES (?,?,?,?)";
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, name);
+            ps.setObject(2, course_id);
+            ps.setString(3, description);
+            ps.setString(4, seat);
+
+            ps.executeUpdate();
+
+//            Version I
+//                    String query = "INSERT INTO students (name, course_id, description, seat)" +
 //                    "VALUES ('Michał', 1, 'Co ja tutaj robię!', 'B.2.1')," +
 //                    "('Tomek', null, 'Nudzi mi się!', 'A.1.2'), " +
 //                    "('Jaromir', 1, 'Potrzebuję kasy!', 'A.2.2')," +
 //                    "('Klaudia', 2, 'Mama mi kazała!', 'C.2.2')," +
 //                    "('Mateusz', 2, 'Kurs szydełkowania był już zajęty!', 'D.2.1');";
 //
-//            statement.executeUpdate(query1);
+//            statement.executeUpdate(query);
 
-            String query1 = "INSERT INTO students (name, course_id, description, seat) VALUES (?,?,?,?)";
+//            Version II
+//            String query1 = "INSERT INTO students (name, course_id, description, seat) VALUES (?,?,?,?)";
+//
+//            try (PreparedStatement ps = connection.prepareStatement(query1)) {
+//
+//                ps.setString(1, "Michał");
+//                ps.setInt(2, 1);
+//                ps.setString(3, "Co ja tutuaj robię?");
+//                ps.setString(4, "B.2.1");
+//
+//                ps.executeUpdate();
+//            }
 
-            try (PreparedStatement ps = connection.prepareStatement(query1)) {
+        }
+    }
 
-                ps.setString(1, "Michał");
-                ps.setInt(2, 1);
-                ps.setString(3, "Co ja tutuaj robię?");
-                ps.setString(4, "B.2.1");
+    public void updateStudent(int id, String description, String seat) throws SQLException {
 
-                ps.executeUpdate();
+        String query = "UPDATE  students SET description= ?, seat = ? WHERE id = ?";
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
 
-            }
+            ps.setString(1, description);
+            ps.setString(2, seat);
+            ps.setInt(3, id);
 
-            try (PreparedStatement ps = connection.prepareStatement(query1)) {
-
-                ps.setString(1, "Tomek");
-                ps.setInt(2, 1);
-                ps.setString(3, "Nudzi mi się!");
-                ps.setString(4, "A.1.2");
-
-                ps.executeUpdate();
-
-            }
-
-            try (PreparedStatement ps = connection.prepareStatement(query1)) {
-
-                ps.setString(1, "Jaromir");
-                ps.setInt(2, 1);
-                ps.setString(3, "Potrzebuję kasy!");
-                ps.setString(4, "A.2.2");
-
-                ps.executeUpdate();
-
-            }
-
-            try (PreparedStatement ps = connection.prepareStatement(query1)) {
-
-                ps.setString(1, "Klaudia");
-                ps.setInt(2, 2);
-                ps.setString(3, "Mama mi kazała!");
-                ps.setString(4, "C.2.2");
-
-                ps.executeUpdate();
-
-            }
-
-            try (PreparedStatement ps = connection.prepareStatement(query1)) {
-
-                ps.setString(1, "Mateusz");
-                ps.setInt(2, 2);
-                ps.setString(3, "Kurs szydełkowania był już zajęty");
-                ps.setString(4, "D.2.1");
-
-                ps.executeUpdate();
-
-            }
+            ps.executeUpdate();
 
         }
     }
@@ -264,6 +289,19 @@ public class CoursesManager {
         }
     }
 
+    public void deleteAttendanceInDate(int id, LocalDate date) throws SQLException {
+
+        String query = "DELETE FROM attendance_list WHERE id= ? AND date= ?";
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, id);
+            ps.setDate(2, java.sql.Date.valueOf(date));
+
+            ps.executeUpdate();
+        }
+    }
+
     public void dropAllTables() throws SQLException {
 
         try (Connection connection = connectionFactory.getConnection();
@@ -275,7 +313,18 @@ public class CoursesManager {
 
             statement.executeUpdate(query);
         }
+    }
 
+    public void deleteCourse(int id) throws SQLException {
+
+        String query = "DELETE FROM courses WHERE id= ?";
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+        }
     }
 
     public void printAllCourses() throws SQLException {
@@ -358,8 +407,22 @@ public class CoursesManager {
 
         //Tworzenie nowch tablic
         coursesManager.createCoursesTable();
+
+        coursesManager.deleteCourse(3);
+        coursesManager.updateCourseName(2, "C++ dla zaawansowanych");
+
         coursesManager.createStudentsTable();
+        coursesManager.addStudent("Michał", 1, "Co ja tutaj robię!", "B.2.1");
+        coursesManager.addStudent("Tomek", null, "Nudzi mi się!", "A.1.2");
+        coursesManager.addStudent("Jaromir", 1, "Potrzebuję kasy!", "B.2.2");
+        coursesManager.addStudent("Klaudia", 2, "Mama mi kazała", "C.2.2");
+        coursesManager.addStudent("Mateusz", 2, "Kurs szydełkowania był już zajęty", "C.1.2");
+
+        coursesManager.updateStudent(1, "Zbłądziłem", "A.1.1");
+
         coursesManager.createAttendanceListTable();
+
+        coursesManager.deleteAttendanceInDate(1, LocalDate.of(2018,9,5));
 
         coursesManager.printAllCourses();
 
