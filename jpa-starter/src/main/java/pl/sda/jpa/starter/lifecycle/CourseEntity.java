@@ -27,7 +27,7 @@ public class CourseEntity {
         this.endDate = endDate;
     }
 
-    public int getId() {
+    public Object getId() {
         return id;
     }
 

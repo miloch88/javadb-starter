@@ -47,7 +47,8 @@ public class JpaLifeCycle {
             logger.info("Before: {}", javaGda11);
             logger.info("Contains: {}", entityManager.contains(javaGda11));
             /**
-             * Zapisujemy nowy obiekt w Persistence Context, encja w tej chwili staje się zarządzana przez EntityManager
+             * Zapisujemy nowy obiekt w Persistence Context, encja w tej chwili staje się zarządzana
+             * przez EntityManager
              * Nie zawsze oznacza to natychmiastowy zapis w bazie danych!
              */
             entityManager.persist(javaGda11);

@@ -21,6 +21,7 @@ public class CoursesManager {
 
         try (Connection connection = connectionFactory.getConnection();
              Statement statement = connection.createStatement()) {
+
 //            String query1 = "DROP TABLE IF EXISTS courses CASCADE;";
 //
 //            statement.executeUpdate(query1);

@@ -8,4 +8,8 @@ public class AnimalsTypesDao {
         animalType = new AnimalType(id, name);
         return animalType;
     }
+
+    public void addAnimal(String name){
+
+    }
 }

@@ -3,11 +3,13 @@ package pl.sda.jpa.starter.basic;
 import javax.persistence.*;
 
 /**
- * Adnotacja @Entity wskazuje, że klasa CoachEntity to encja, która ma być mapowana do tabeli w bazie danych
+ * Adnotacja @Entity wskazuje, że klasa CoachEntity to encja, która ma być mapowana do tabeli
+ * w bazie danych
  */
 @Entity
 /**
- * Adnotacja @Table zawiera informacje na temat tabeli w której mają być zapisane dane z tej klasy
+ * Adnotacja @Table zawiera informacje na temat tabeli w której mają być zapisane dane
+ * z tej klasy
  */
 @Table(name = "coaches")
 public class CoachEntity {
