@@ -10,8 +10,6 @@ import java.util.List;
 // klasa DAO odpowiedzialna za dostęp do bazy dancyh
 public class AnimalsTypesDao {
 
-    private static Logger logger = LoggerFactory.getLogger(AnimalsTypesDao.class);
-
     private ConnectionFactory cf;
 
     public AnimalsTypesDao(ConnectionFactory cf) {
