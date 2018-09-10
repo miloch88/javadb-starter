@@ -10,8 +10,13 @@ public class AddressEntity {
     private Integer id;
     private String city;
     private String street;
-    @OneToOne(mappedBy = "address")
+//    @OneToOne(cascade = {CascadeType.ALL})
+
+    @OneToOne(mappedBy = "address") //wskazanie na właściciela w 19 StudentEntetity
     private StudentEntity student;
+
+    //Zadanie 8. d) zamieniamy właściciela, teraz jest nim students a zamieniamy na addresses
+    //@OneToOne(cascade = {CascadeType.ALL})
 
     protected AddressEntity() {}
 

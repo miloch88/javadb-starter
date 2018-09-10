@@ -46,7 +46,8 @@ public class Main {
 
 //        adao.createAnimalTable();
 
-//        adao.addAnimal(new Animal("Lucek", 6, new AnimalType(3,"Lis") ));
+        //if AnimalType is not exist -> create
+        adao.addAnimal(new Animal("Lucek", 6, new AnimalType(3,"Lis") ));
 //        adao.addAnimal(new Animal("Rysio", 5, new AnimalType(4,"Ryś") ));
 //        adao.addAnimal(new Animal("Jerzyk", 4, new AnimalType(5,"Jeż") ));
 //        adao.addAnimal(new Animal("Zuzia", 3, new AnimalType(6,"Zając") ));

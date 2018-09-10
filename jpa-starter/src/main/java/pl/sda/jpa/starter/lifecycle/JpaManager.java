@@ -22,7 +22,10 @@ public class JpaManager {
 
             CourseEntity javaGda11 = new CourseEntity("JavaGda11", "Sopot", Utils.parse("2018-01-01"), Utils.parse("2018-09-01"));
             CourseEntity javaGda22 = new CourseEntity("JavaGda22", "Gdynia", Utils.parse("2018-02-15"), Utils.parse("2018-10-13"));
-            CourseEntity javaGda33 = new CourseEntity("Kurs Szydełkowania", "Gdansk", Utils.parse("2018-03-20"), Utils.parse("2018-11-05"));
+            CourseEntity javaGda33 = new CourseEntity("Kurs Szydełkowania", "Gdańsk", Utils.parse("2018-03-20"), Utils.parse("2018-11-05"));
+
+            //Tworzenie tablic
+//            persistence.xml <property name="hibernate.hbm2ddl.auto" value="create" />
 
             //Dodawanie
 //            courseEntityDao.save(javaGda11);
@@ -30,7 +33,7 @@ public class JpaManager {
 //            courseEntityDao.save(javaGda22);
 
             //Usuwanie
-//            courseEntityDao.delete(javaGda33);
+            courseEntityDao.delete(javaGda33);
 //            courseEntityDao.deleteID(1);
 
             //Znajdowanie

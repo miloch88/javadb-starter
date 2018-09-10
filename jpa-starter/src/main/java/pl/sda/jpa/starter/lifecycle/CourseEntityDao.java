@@ -60,6 +60,7 @@ public class CourseEntityDao {
 
     }
 
+    //Napierw wyciągniej z listy a następnie usuń
     public void delete(CourseEntity courseEntity) {
 
         EntityManager entityManager = null;
@@ -69,7 +70,9 @@ public class CourseEntityDao {
             entityManager.getTransaction().begin();
 
 //            Moja wersja
-//            entityManager.remove(entityManager.find(CourseEntity.class,courseEntity.getId()));
+            CourseEntity entity = entityManager.find(CourseEntity.class, courseEntity.getId());
+            entityManager.remove(entity);
+
 
 //            Twoja wersja
 //            courseEntity = entityManager.merge(courseEntity);
