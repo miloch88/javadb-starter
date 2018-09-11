@@ -10,15 +10,17 @@ public class AddressEntity {
     private Integer id;
     private String city;
     private String street;
-//    @OneToOne(cascade = {CascadeType.ALL})
 
-    @OneToOne(mappedBy = "address") //wskazanie na właściciela w 19 StudentEntetity
+    @OneToOne(mappedBy = "address") //wskazanie na właściciela w 28 StudentEntetity
     private StudentEntity student;
 
-    //Zadanie 8. d) zamieniamy właściciela, teraz jest nim students a zamieniamy na addresses
-    //@OneToOne(cascade = {CascadeType.ALL})
+    /*
+    Zadanie 8.2. d) zamieniamy właściciela, teraz jest nim students a zamieniamy na addresses
+    @OneToOne(cascade = {CascadeType.ALL})
+    private StudentEntity student;
+    */
 
-    protected AddressEntity() {}
+    protected AddressEntity() {} //To jest niezbędne do działanai Hibernatie
 
     public AddressEntity(String city, String street) {
         this.city = city;

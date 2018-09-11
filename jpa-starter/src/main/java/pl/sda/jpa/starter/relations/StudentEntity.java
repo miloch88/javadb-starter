@@ -11,27 +11,39 @@ public class StudentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private String seat;
 
     //Tak to by wyglądało w SQL : "FOREIGN KEY (add_id) REFERENCE adresses(id)"
 
-    //Zadanie 8. b) nie będzie działało usunięcie atrybutu CASCADE
+    /*
+    Zadanie 8.2. b) nie będzie działało usunięcie atrybutu CASCADE
+    @OneToOne(cascade = {})
+    */
     @OneToOne(cascade = {CascadeType.ALL})
-    //Zadanie 8. c) powinniśmy dwa razy uruchomić program (za pierwszym razem będzie błąd FK),
-    // i utworzy nową nazwę tej kolumny
+    /*
+    Zadanie 8.3. c) powinniśmy dwa razy uruchomić program (za pierwszym razem będzie błąd FK),
+    i utworzy nową nazwę tej kolumny
+    */
     @JoinColumn(name = "add_id")
     private AddressEntity address;
+    /*
+    Zadanie 8.2. d) zamieniamy właściciela, teraz jest nim students a zamieniamy na addresses
+    @Join nada nazwę domyślną
+    @OneToOne(mappedBy = "student")
+    */
 
-    //Zadanie 8. d) zamieniamy właściciela, teraz jest nim students a zamieniamy na addresses
-//    @OneToOne(mappedBy = "student") // @JoinColumn nada nazwę domyślną
-
+//    Zadanie 8.3.
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "seat_id")
+    private SeatEntity seat;
 
     /**
-     * Uwaga w adnotacji @ManyToOne brak atrybutu: mappedBy ! - w tej relacje zawsze strona z @ManyToOne jest właścicielem!
+     * Uwaga w adnotacji @ManyToOne brak atrybutu: mappedBy !
+     * - w tej relacje zawsze strona z @ManyToOne jest właścicielem!
      */
     @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "Yaba_Daba_Doo")
+    @JoinColumn(name = "course_name")
     private CourseEntity course;
+
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "students_skills",
@@ -58,16 +70,23 @@ public class StudentEntity {
         this.name = name;
     }
 
-    public String getSeat() {
-        return seat;
-    }
-
-    public void setSeat(String seat) {
-        this.seat = seat;
-    }
+//    public String getSeat() {
+//        return seat;
+//    }
+//
+//    public void setSeat(String seat) {
+//        this.seat = seat;
+//    }
 
     public AddressEntity getAddress() {
         return address;
+    }
+
+    public SeatEntity getSeat(){return seat;}
+
+    public void setSeat(SeatEntity seat){
+        this.seat = seat;
+        seat.setStudent(this);
     }
 
     public void setAddress(AddressEntity address) {

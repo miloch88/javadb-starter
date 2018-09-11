@@ -54,6 +54,7 @@
         <class>pl.sda.jpa.starter.relations.AddressEntity</class>
         <class>pl.sda.jpa.starter.relations.SkillEntity</class>
         <class>pl.sda.jpa.starter.relations.CourseEntity</class>
+        <class>pl.sda.jpa.starter.relations.SeatEntity</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 

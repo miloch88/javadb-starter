@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JpaRelations {
@@ -21,26 +23,42 @@ public class JpaRelations {
     }
 
     private void oneToOne() {
+
         EntityManager entityManager = null;
         try {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            AddressEntity address = new AddressEntity("Gdańsk", "Malwinowa 1/3");
-            StudentEntity student = new StudentEntity("Jan Kowalski");
-            student.setAddress(address);
+            AddressEntity address1 = new AddressEntity("Gdańsk", "Malwinowa 1/3");
+            AddressEntity address2 = new AddressEntity("Zendikar", "Sea Gate 3/4");
 
-//            Zadanie 8. a)nie powinno działać, doda studenta ale nie adres
-//            address.setStudent(student);
+            StudentEntity student1 = new StudentEntity("Jan Kowalski");
+            StudentEntity student2 = new StudentEntity("Nissa Revane");
 
-            entityManager.persist(student);
-//            entityManager.persist(address);
+            SeatEntity seat1 = new SeatEntity("A",1,1);
+            SeatEntity seat2 = new SeatEntity("B",2,2);
 
+            student1.setAddress(address1);
+            student2.setAddress(address2);
+
+            student1.setSeat(seat2);
+            student2.setSeat(seat1);
+
+            /*
+            Zadanie 8.2. a)nie powinno działać, doda studenta ale nie adres, ponieważ właścicielem jest
+            student a nie address
+            address.setStudent(student);
+            */
+
+            entityManager.persist(student1);
+            entityManager.persist(student2);
+
+//            To jest potrzebne tylko do logger
             StudentEntity studentEntity = entityManager.find(StudentEntity.class, 1);
             logger.info("Student: {}", studentEntity);
 
             AddressEntity addressEntity = entityManager.find(AddressEntity.class, 1);
-//            logger.info("AddressEntity Student: {}", addressEntity.getStudent());
+            logger.info("AddressEntity Student: {}", addressEntity.getStudent());
 
             entityManager.getTransaction().commit();
         } finally {
@@ -57,23 +75,24 @@ public class JpaRelations {
             entityManager.getTransaction().begin();
             List<StudentEntity> list;
 
-            CourseEntity course = new CourseEntity("JavaGda11", "Sopot");
-            CourseEntity course1 = new CourseEntity("Kurs Szydełkowania", "Ravnica");
+            CourseEntity course1 = new CourseEntity("JavaGda11", "Sopot");
+            CourseEntity course2 = new CourseEntity("Kurs Szydełkowania", "Ravnica");
             StudentEntity student = new StudentEntity("Jan Kowalski");
             StudentEntity student1 = new StudentEntity("Jace Beleren");
             StudentEntity student2 = new StudentEntity("Chandra Naalar");
-            course.addStudent(student);
-            course1.addStudent(student1);
-            course1.addStudent(student2);
 
-            list = entityManager.createQuery("FROM StudentEntity WHERE name = 'Jan Kowalski'", StudentEntity.class).getResultList();
-            StudentEntity studentEntity1 = list.get(0);
-//            entityManager.persist(student);
-//            entityManager.persist(student1);
-//            entityManager.persist(student2);
+            course1.addStudent(student);
+            course2.addStudent(student1);
+            course2.addStudent(student2);
 
+            entityManager.persist(student);
+            entityManager.persist(student1);
+            entityManager.persist(student2);
 
-            entityManager.remove(studentEntity1);
+//            list = entityManager.createQuery
+//            ("FROM StudentEntity WHERE name = 'Jan Kowalski'", StudentEntity.class).getResultList();
+//            StudentEntity studentEntity1 = list.get(0);
+//            entityManager.remove(studentEntity1);
 
 
             StudentEntity studentEntity = entityManager.find(StudentEntity.class, 1);
@@ -90,21 +109,29 @@ public class JpaRelations {
         }
     }
 
+
+
     private void manyToMany() {
         EntityManager entityManager = null;
         try {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
+            List<StudentEntity> list;
 
-            SkillEntity skill1 = new SkillEntity("JVM Master");
-            SkillEntity skill2 = new SkillEntity("JDBC Master");
-            SkillEntity skill3 = new SkillEntity("Hibernate Master");
-            StudentEntity student = new StudentEntity("Jan Kowalski");
-            student.addSkill(skill1);
-            student.addSkill(skill2);
-            student.addSkill(skill3);
+//            SkillEntity skill1 = new SkillEntity("JVM Master");
+//            SkillEntity skill2 = new SkillEntity("JDBC Master");
+//            SkillEntity skill3 = new SkillEntity("Hibernate Master");
+//            StudentEntity student = new StudentEntity("Jan Kowalski");
+//            student.addSkill(skill1);
+//            student.addSkill(skill2);
+//            student.addSkill(skill3);
+//
+//            entityManager.persist(student);
 
-            entityManager.persist(student);
+            list = entityManager.createQuery
+            ("FROM StudentEntity WHERE name = 'Jan Kowalski'", StudentEntity.class).getResultList();
+            StudentEntity studentEntity1 = list.get(0);
+            entityManager.remove(studentEntity1);
 
             StudentEntity studentEntity = entityManager.find(StudentEntity.class, 1);
             logger.info("Student: {}", studentEntity);
@@ -117,12 +144,14 @@ public class JpaRelations {
         }
     }
 
+
+
     public static void main(String[] args) {
         JpaRelations jpaQueries = new JpaRelations();
         try {
 //            jpaQueries.oneToOne();
-            jpaQueries.oneToMany();
-            //jpaQueries.manyToMany();
+//            jpaQueries.oneToMany();
+            jpaQueries.manyToMany();
         } catch (Exception e) {
             logger.error("", e);
         } finally {
