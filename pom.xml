@@ -16,6 +16,7 @@
         <module>commons</module>
         <module>zoo-keeper</module>
         <module>zookeeper</module>
+        <module>zookeeper-jpa</module>
     </modules>
 
     <dependencies>

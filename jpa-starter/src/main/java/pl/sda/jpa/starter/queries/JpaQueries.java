@@ -2,10 +2,7 @@ package pl.sda.jpa.starter.queries;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.sda.jpa.starter.queries.entities.CourseEntity;
-import pl.sda.jpa.starter.queries.entities.CourseInfo;
-import pl.sda.jpa.starter.queries.entities.EntitiesLoader;
-import pl.sda.jpa.starter.queries.entities.StudentEntity;
+import pl.sda.jpa.starter.queries.entities.*;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -37,7 +34,7 @@ public class JpaQueries {
             /**
              *  krótka forma: "FROM CourseEntity"
              */
-            Query simpleQuery = entityManager.createQuery("SELECT c FROM CourseEntity c JOIN c.students");
+            Query simpleQuery = entityManager.createQuery("SELECT c FROM CourseEntity c");
             List resultList = simpleQuery.getResultList();
             printList(resultList);
 
@@ -112,6 +109,7 @@ public class JpaQueries {
                 entityManager.close();
             }
         }
+
     }
 
     private void relationsQuery() {
@@ -124,7 +122,7 @@ public class JpaQueries {
              *  Inner Join bez wskazywania połączeń (przez wyrażenie ON)
              */
             List<Object[]> resultList = entityManager.createQuery("SELECT s, c FROM StudentEntity s JOIN s.course c", Object[].class)
-                                                     .getResultList();
+                    .getResultList();
             Object[] firstRow = resultList.get(0);
             StudentEntity studentEntity = (StudentEntity) firstRow[0];
             CourseEntity courseEntity = (CourseEntity) firstRow[1];
@@ -135,22 +133,96 @@ public class JpaQueries {
              *  Inner Join z dodatkowym zawężaniem
              */
             List<StudentEntity> students = entityManager.createQuery("SELECT s FROM StudentEntity s JOIN s.course c WHERE c.place = :place", StudentEntity.class)
-                                                        .setParameter("place", "Gdynia")
-                                                        .getResultList();
+                    .setParameter("place", "Gdynia")
+                    .getResultList();
             printList(students);
 
             /**
              *  Left Join z grupowaniem i sortowaniem
              */
             resultList = entityManager.createQuery("SELECT c, COUNT(s) AS students_count FROM CourseEntity c LEFT JOIN c.students s " +
-                                                   "GROUP BY c ORDER BY students_count ASC", Object[].class)
-                                      .getResultList();
+                    "GROUP BY c ORDER BY students_count ASC", Object[].class)
+                    .getResultList();
             firstRow = resultList.get(0);
             courseEntity = (CourseEntity) firstRow[0];
             long studentsCount = (long) firstRow[1];
             logger.info("Row 1, column 1: " + courseEntity);
             logger.info("Row 1, column 2: " + studentsCount);
             printList(resultList);
+
+            entityManager.getTransaction().commit();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
+    private void selectStudents() {
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+
+            Query simpleQuery = entityManager.createQuery("SELECT s FROM StudentEntity s ORDER BY s.name ASC");
+            List resultList = simpleQuery.getResultList();
+            printList(resultList);
+
+            entityManager.getTransaction().commit();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
+    private void selectLastThreeStudents() {
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+
+            Query simpleQuery = entityManager.createQuery("SELECT s FROM StudentEntity s ORDER BY s.name DESC").setMaxResults(3);
+            List resultList = simpleQuery.getResultList();
+            printList(resultList);
+
+            entityManager.getTransaction().commit();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
+    private void olderThan25() {
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+
+            Query simpleQuery = entityManager.createQuery
+                    ("SELECT s.name FROM StudentEntity s WHERE s.age > :age")
+                    .setParameter("age", 25);
+            List resultList = simpleQuery.getResultList();
+            printList(resultList);
+
+            entityManager.getTransaction().commit();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
+    private void countAndAgeOfStudents() {
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+
+            List<StudentsStats> studentsStats = entityManager.createQuery("SELECT new pl.sda.jpa.starter.queries.entities.StudentsStats (s.age, count(s))  FROM StudentEntity s GROUP BY s.age", StudentsStats.class)
+                    .getResultList();
+            printList(studentsStats);
 
             entityManager.getTransaction().commit();
         } finally {
@@ -179,8 +251,15 @@ public class JpaQueries {
         JpaQueries jpaQueries = new JpaQueries();
         try {
             EntitiesLoader.fillDataBase(jpaQueries.getEntityManagerFactory());
-            jpaQueries.simpleQuery();
-            //jpaQueries.relationsQuery();
+//            jpaQueries.simpleQuery();
+
+//            jpaQueries.selectStudents();
+//            jpaQueries.selectLastThreeStudents();
+//            jpaQueries.olderThan25();
+//            jpaQueries.countAndAgeOfStudents();
+
+            jpaQueries.relationsQuery();
+
         } catch (Exception e) {
             logger.error("", e);
         } finally {

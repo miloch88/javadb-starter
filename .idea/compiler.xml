@@ -11,7 +11,9 @@
         <module name="jdbc-starter" />
         <module name="jpa-starter" />
         <module name="library-manager" />
+        <module name="zoo-keeper-jpa" />
         <module name="zookeeper" />
+        <module name="zookeeper-jpa" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -21,7 +23,9 @@
       <module name="jdbc-starter" target="1.8" />
       <module name="jpa-starter" target="1.8" />
       <module name="library-manager" target="1.8" />
+      <module name="zoo-keeper-jpa" target="1.8" />
       <module name="zookeeper" target="1.8" />
+      <module name="zookeeper-jpa" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

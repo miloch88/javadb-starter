@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.sda.jpa.starter.queries.entities.CourseEntity;
 import pl.sda.jpa.starter.queries.entities.EntitiesLoader;
+import pl.sda.jpa.starter.queries.entities.StudentsStats;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.ArrayList;
@@ -33,17 +35,39 @@ public class CourseEntityDaoExt {
         try {
             EntitiesLoader.fillDataBase(dao.getEntityManagerFactory());
 
+//            List<CourseEntity> list = dao.findByCity("Sopot");
+            List<CourseEntity> list = dao.findByName("Gd",1,5);
+            System.out.println(list);
+
         } catch (Exception e) {
             logger.error("", e);
         } finally {
             dao.close();
         }
     }
+
     /**
      * Metoda wyszukuje wszystkie kursy znajdujące się w mieście podanym w argumencie 'city', posortowane malejąco po dacie rozpoczęcia.
      */
     public List<CourseEntity> findByCity(String city) {
-        return new ArrayList<>();
+
+        EntityManager entityManager = null;
+        List<CourseEntity> courseEntities;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+
+            courseEntities = entityManager.createQuery("SELECT c FROM CourseEntity c WHERE place = :place", CourseEntity.class)
+                    .setParameter("place", city)
+                    .getResultList();
+
+            entityManager.getTransaction().commit();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+        return courseEntities;
     }
 
     /**
@@ -51,7 +75,26 @@ public class CourseEntityDaoExt {
      * i zaczynając od kursu z indeksem: 'from' (użyj: LIKE ‘%fraza%’)
      */
     public List<CourseEntity> findByName(String prefix, int from, int max) {
-        return new ArrayList<>();
+
+        EntityManager entityManager = null;
+        List<CourseEntity> courseEntities;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+
+            courseEntities = entityManager.createQuery("SELECT c FROM CourseEntity c WHERE place LIKE '% :p %' ", CourseEntity.class)
+                    .setParameter("p", prefix)
+                    .setFirstResult(from)
+                    .setMaxResults(max)
+                    .getResultList();
+
+            entityManager.getTransaction().commit();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+        return courseEntities;
     }
 
     /**

@@ -18,6 +18,7 @@ public class StudentEntity {
     Zadanie 8.2. b) nie będzie działało usunięcie atrybutu CASCADE
     @OneToOne(cascade = {})
     */
+    //Dodaje studenta i kurs jednocześnie
     @OneToOne(cascade = {CascadeType.ALL})
     /*
     Zadanie 8.3. c) powinniśmy dwa razy uruchomić program (za pierwszym razem będzie błąd FK),

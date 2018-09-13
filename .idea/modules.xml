@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/jdbc-starter/jdbc-starter.iml" filepath="$PROJECT_DIR$/jdbc-starter/jdbc-starter.iml" />
       <module fileurl="file://$PROJECT_DIR$/jpa-starter/jpa-starter.iml" filepath="$PROJECT_DIR$/jpa-starter/jpa-starter.iml" />
       <module fileurl="file://$PROJECT_DIR$/library-manager/library-manager.iml" filepath="$PROJECT_DIR$/library-manager/library-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zookeeper-jpa/zoo-keeper-jpa.iml" filepath="$PROJECT_DIR$/zookeeper-jpa/zoo-keeper-jpa.iml" />
       <module fileurl="file://$PROJECT_DIR$/zookeeper/zookeeper.iml" filepath="$PROJECT_DIR$/zookeeper/zookeeper.iml" />
     </modules>
   </component>
