@@ -12,48 +12,59 @@ public class Main {
         Logger logger = LoggerFactory.getLogger(ConnectionFactory.class);
 
         ConnectionFactory cf = new ConnectionFactory();
-        AnimalsTypesDao ato = new AnimalsTypesDao(cf);
-        AnimalDAO adao = new AnimalDAO(cf);
+        AnimalsTypesDao typeDAO = new AnimalsTypesDao(cf);
+        AnimalDAO animalDAO = new AnimalDAO(cf);
 
-        //Połączenie log
+//        Połączenie log
 //        logger.info(connection.getCatalog());
 
-//        adao.deleteAnimalTable();
-//        ato.deleteTable();
-//
-//        ato.createTable();
-//
-//        ato.add(new AnimalType("Nosorożec"));
-//        ato.add(new AnimalType("Zebra"));
-//        ato.add(new AnimalType("Lew"));
-//        ato.add(new AnimalType("Szympans"));
-//        ato.add(new AnimalType("Żyrafa"));
-//        ato.add(new AnimalType("Żyrafa"));
-//
-//        ato.update(1, "Sowa");
-//        ato.update(2, "Bóbr");
-//        ato.update(3, "Lis");
-//        ato.update(4, "Ryś");
-//        ato.update(5, "Jeż");
-//        ato.update(6, "Zając");
+//        Usuwamy tablice
+//        animalDAO.deleteAnimalTable();
+//        typeDAO.deleteTable();
 
-//        List<AnimalType> list = ato.list();
-//        System.out.println(ato.list());
+//        Tworzymy tablice
+//        typeDAO.createTable();
+//        animalDAO.createAnimalTable();
 
-//        System.out.println(ato.get(5));
-//        ato.delete(list.get(4));
+//        Dodajemy typy zqwietzątek
+//        AnimalType rhino = new AnimalType("Nosorożec");
+//        AnimalType zebra = new AnimalType("Zebra");
+//        AnimalType lion = new AnimalType("Lew");
+//        AnimalType monkey = new AnimalType("Małpka");
 
+//        typeDAO.add(rhino);
+//        typeDAO.add(zebra);
+//        typeDAO.add(lion);
+//        typeDAO.add(monkey);
+//        typeDAO.add(new AnimalType("Żyrafa"));
+//        typeDAO.add(new AnimalType("Żyrafa"));
 
-//        adao.createAnimalTable();
+//        Updateujemy zwierzątka
+//        typeDAO.update(1, "Sowa");
+//        typeDAO.update(2, "Bóbr");
+//        typeDAO.update(3, "Lis");
+//        typeDAO.update(4, "Ryś");
+//        typeDAO.update(5, "Jeż");
+//        typeDAO.update(6, "Zając");
 
-        //if AnimalType is not exist -> create
-        adao.addAnimal(new Animal("Lucek", 6, new AnimalType(3,"Lis") ));
-//        adao.addAnimal(new Animal("Rysio", 5, new AnimalType(4,"Ryś") ));
-//        adao.addAnimal(new Animal("Jerzyk", 4, new AnimalType(5,"Jeż") ));
-//        adao.addAnimal(new Animal("Zuzia", 3, new AnimalType(6,"Zając") ));
-//        adao.addAnimal(new Animal("Zosia", 2, new AnimalType(1,"Sowa") ));
-//        adao.addAnimal(new Animal("Borys", 1, new AnimalType(2,"Bóbr") ));
+//        Wyświetlamy tablicę zwierzątek
+//        System.out.println(typeDAO.list());
 
+//        Zwraca obiekt o pdanym id
+//        System.out.println(typeDAO.get(2));
+
+//        if AnimalType is not exist -> create
+
+//        animalDAO.addAnimal(new Animal("Lucek", 5, new AnimalType(3,"Lis") ));
+//        animalDAO.addAnimal(new Animal("Rysio", 15, typeDAO.get(4) ));
+//        animalDAO.addAnimal(new Animal("Jerzyk", 20, typeDAO.get(5) ));
+//        animalDAO.addAnimal(new Animal("Zuzia", 10, new AnimalType(6,"Zając") ));
+//        animalDAO.addAnimal(new Animal("Zosia", 25, typeDAO.get(1) ));
+//        animalDAO.addAnimal(new Animal("Borys", 30, typeDAO.get(2) ));
+
+        System.out.println(animalDAO.list());
+        animalDAO.delete(6);
+        System.out.println(animalDAO.list());
 
     }
 }

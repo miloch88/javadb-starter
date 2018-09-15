@@ -95,6 +95,7 @@ public class AnimalsTypesDao {
     public AnimalType get(int id) throws SQLException {
 
         String query = "SELECT * FROM animals_types WHERE id= ?;";
+        AnimalType animalType = null;
 
         try (Connection connection = cf.getConnection();
              PreparedStatement ps = connection.prepareStatement(query)) {
@@ -106,8 +107,7 @@ public class AnimalsTypesDao {
             if (rs.next()) {
                 int idAnimal = rs.getInt("id");
                 String name = rs.getString("name");
-
-                return new AnimalType(id, name);
+                return new AnimalType(idAnimal, name);
             }
         }
         return null;

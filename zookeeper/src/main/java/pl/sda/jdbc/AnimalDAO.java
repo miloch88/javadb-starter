@@ -6,10 +6,14 @@ import java.util.List;
 
 public class AnimalDAO {
 
-    private AnimalType animalType;
+    private AnimalsTypesDao animalsTypesDao;
     private ConnectionFactory cf;
 
 
+    public AnimalDAO(AnimalsTypesDao animalsTypesDao, ConnectionFactory cf) {
+        this.animalsTypesDao = animalsTypesDao;
+        this.cf = cf;
+    }
 
     public AnimalDAO(ConnectionFactory cf) {
         this.cf = cf;
@@ -62,8 +66,9 @@ public class AnimalDAO {
 
     public List<Animal> list() throws SQLException {
 
+        AnimalsTypesDao dao = new AnimalsTypesDao(cf);
         List<Animal> list = new ArrayList<>();
-        String query = "SELECT * FROM animals a JOIN animals_types t ON a.type_id = t.id;";
+        String query = "SELECT * FROM animals;";
 
         try(Connection connection = cf.getConnection();
         PreparedStatement ps = connection.prepareStatement(query)){
@@ -71,12 +76,28 @@ public class AnimalDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()){
-                int id = rs.getInt("t.id");
+                int id = rs.getInt("id");
+                String name  = rs.getString("name");
+                int age  = rs.getInt("age");
+                int animalID  = rs.getInt("type_id");
 
+                AnimalType type = dao.get(animalID);
+
+                list.add(new Animal(id, name, age, type));
             }
         }
         return list;
+    }
 
+    public void delete(int id) throws SQLException {
+        String query = "DELETE FROM animals WHERE id= ?";
+
+        try(Connection connection = cf.getConnection();
+        PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setInt(1,id);
+
+            ps.executeUpdate();
+        }
     }
 
 }

@@ -10,6 +10,9 @@ public class AnimalType {
         this.name = name;
     }
 
+    public AnimalType() {
+    }
+
     public AnimalType(String name){
         this.name = name;
     }
@@ -24,7 +27,7 @@ public class AnimalType {
 
     @Override
     public String toString() {
-        return "\nAnimalType{" +
+        return "AnimalType{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}' ;

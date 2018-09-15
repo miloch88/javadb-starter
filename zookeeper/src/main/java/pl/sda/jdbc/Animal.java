@@ -17,6 +17,13 @@ public class Animal {
         this.animalType = animalType;
     }
 
+    public Animal(int id, String name, int age, AnimalType animalType) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.animalType = animalType;
+    }
+
     public int getId() {
         return id;
     }
@@ -40,7 +47,7 @@ public class Animal {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", animalType=" + animalType +
-                '}';
+                '}'+ "\n";
     }
 }
 
